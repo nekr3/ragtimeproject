@@ -11,5 +11,27 @@
   "browser_action": {
     "default_popup": "popup.html"
   },
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.foxnews.com/*",
+        "https://www.vox.com/*",
+        "https://www.msnbc.com/*",
+        "https://www.breitbart.com/*",
+        "https://www.cnn.com/*",
+        "https://www.wsj.com/*",
+        "https://www.nytimes.com/*",
+        "https://www.infowars.com/*",
+        "https://www.theatlantic.com/*",
+        "https://www.theonion.com/*"
+      ],
+      "js": [
+        "js/content.js"
+      ]
+    }
+  ],
   "manifest_version": 2
 }
