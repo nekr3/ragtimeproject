@@ -9,7 +9,7 @@ ALL_SITES.forEach((val) => {
     xhr.onload = function () {
         const doc = this.responseXML;
         const url = val.substring(8, val.length - 1);
-        var articleLinks = []; //TODO actually read in from doc
+        const articleLinks = [];
         switch (url) {
             case "www.foxnews.com":
                 doc.querySelectorAll(".content a").forEach((e) => {
