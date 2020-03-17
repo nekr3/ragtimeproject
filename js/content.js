@@ -2,7 +2,6 @@ const WEBPAGEURL = document.location.host;
 
 if (confirm(`I AM HEREEEEE at ${WEBPAGEURL}`)) {
 
-    var articles;
     switch (WEBPAGEURL) {
         case "www.foxnews.com":
             alert("hello?");
@@ -37,8 +36,9 @@ if (confirm(`I AM HEREEEEE at ${WEBPAGEURL}`)) {
         case "www.breitbart.com":
             alert("hello?");
 
-            document.querySelectorAll("article h2 a").forEach((e) => {
-                e.textContent = "oh no im gone :(";
+            document.querySelectorAll("article").forEach((e) => {
+                e.querySelector("h2 a").textContent = "oh no im gone :(";
+                e.querySelector(".excerpt p").textContent = "im a little blurb!";
             });
             document.querySelectorAll("#BBTrendUL a").forEach((e) => {
                 e.textContent = "oh no im gone :(";
@@ -54,18 +54,20 @@ if (confirm(`I AM HEREEEEE at ${WEBPAGEURL}`)) {
                 e.textContent = "oh no im gone :(";
             });
             break;
-        case "www.wsj.com": //DOESNT WORK
+        case "www.wsj.com": //TODO DOESNT WORK
             alert("hello?");
 
             document.querySelectorAll("article").forEach((e) => {
-                e.querySelector("h3 a").textContent = "oh no im gone :(";
-                e.querySelector("p").textContent = "Im a description!";
+                const a = e.querySelector("h3 a");
+                if (a) a.textContent = "oh no im gone :(";
+                const b = e.querySelector("p");
+                if (b) b.textContent = "Im a description!";
             });
             break;
         case "www.nytimes.com":
             alert("hello?");
 
-            //idk how 2 do plz help
+            //TODO idk how 2 do plz help
             break;
         case "www.infowars.com":
             alert("hello?");
