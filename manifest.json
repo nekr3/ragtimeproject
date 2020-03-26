@@ -14,16 +14,16 @@
   "permissions": [
     "activeTab",
     "storage",
-    "https://www.foxnews.com/",
-    "https://www.vox.com/",
-    "https://www.msnbc.com/",
-    "https://www.breitbart.com/",
-    "https://www.cnn.com/",
-    "https://www.wsj.com/",
-    "https://www.nytimes.com/",
-    "https://www.infowars.com/",
-    "https://www.theatlantic.com/",
-    "https://www.theonion.com/"
+    "https://www.foxnews.com/*",
+    "https://www.vox.com/*",
+    "https://www.msnbc.com/*",
+    "https://www.breitbart.com/*",
+    "https://www.cnn.com/*",
+    "https://www.wsj.com/*",
+    "https://www.nytimes.com/*",
+    "https://www.infowars.com/*",
+    "https://www.theatlantic.com/*",
+    "https://www.theonion.com/*"
   ],
   "content_scripts": [
     {
