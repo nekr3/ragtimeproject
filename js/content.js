@@ -18,8 +18,8 @@ function switchHomePage() {
                     if (e.children.length === 0) {
                         console.log("looking for article " + articles[i]);
 
-                        getArticleDetails(articles[i], (title, _) => {
-                            e.textContent = title;
+                        getArticleDetails(articles[i], (title, _, __) => {
+                            e.textContent = "CHANGED: " + title;
                         });
 
                         i = (i + 1) % articles.length;
@@ -36,9 +36,9 @@ function switchHomePage() {
                 document.querySelectorAll(".c-entry-box--compact__body").forEach((e) => {
                     console.log("looking for article " + articles[i]);
 
-                    getArticleDetails(articles[i], (title, _) => {
-                        e.querySelector(".c-entry-box--compact__title a").textContent = "CHANGED: " + title;
-                        e.querySelector(".c-entry-box--compact__dek").textContent = "blurb";
+                    getArticleDetails(articles[i], (title, blurb, _) => {
+                        elSet(e.querySelector(".c-entry-box--compact__title a"), "CHANGED: " + title);
+                        elSet(e.querySelector(".c-entry-box--compact__dek"), "BLURB: " + blurb);
                     });
 
                     i = (i + 1) % articles.length;
@@ -52,17 +52,23 @@ function switchHomePage() {
 
                 var i = 0;
                 document.querySelectorAll(".cover-spread-tease__headline span:not(.icon)").forEach((e) => {
-                    e.textContent = articles[i];
+                    getArticleDetails(articles[i], (title, _, __) => {
+                        e.textContent = "CHANGED: " + title;
+                    });
                     i = (i + 1) % articles.length;
                 });
 
                 document.querySelectorAll(".twoByOne h3 a").forEach((e) => {
-                    e.textContent = articles[i];
+                    getArticleDetails(articles[i], (title, _, __) => {
+                        e.textContent = "CHANGED: " + title;
+                    });
                     i = (i + 1) % articles.length;
                 });
 
                 document.querySelectorAll(".cover-spread__headline").forEach((e) => {
-                    e.textContent = articles[i];
+                    getArticleDetails(articles[i], (title, _, __) => {
+                        e.textContent = "CHANGED: " + title;
+                    });
                     i = (i + 1) % articles.length;
                 });
             });
@@ -74,16 +80,22 @@ function switchHomePage() {
 
                 var i = 0;
                 document.querySelectorAll("article").forEach((e) => {
-                    e.querySelector("h2 a").textContent = articles[i];
-                    e.querySelector(".excerpt p").textContent = articles[i];
+                    getArticleDetails(articles[i], (title, blurb, _) => {
+                        elSet(e.querySelector("h2 a"), "CHANGED: " + title);
+                        elSet(e.querySelector(".excerpt p"), "BLURB: " + blurb);
+                    });
                     i = (i + 1) % articles.length;
                 });
                 document.querySelectorAll("#BBTrendUL a").forEach((e) => {
-                    e.textContent = articles[i];
+                    getArticleDetails(articles[i], (title, _, __) => {
+                        e.textContent = "CHANGED: " + title;
+                    });
                     i = (i + 1) % articles.length;
                 });
                 document.querySelectorAll("#DQSW em").forEach((e) => {
-                    e.textContent = articles[i];
+                    getArticleDetails(articles[i], (title, _, __) => {
+                        e.textContent = "CHANGED: " + title;
+                    });
                     i = (i + 1) % articles.length;
                 });
             });
@@ -95,7 +107,9 @@ function switchHomePage() {
 
                 var i = 0;
                 document.querySelectorAll(".cd__headline-text").forEach((e) => {
-                    e.textContent = articles[i];
+                    getArticleDetails(articles[i], (title, _, __) => {
+                        e.textContent = "CHANGED: " + title;
+                    });
                     i = (i + 1) % articles.length;
                 });
             });
@@ -108,10 +122,19 @@ function switchHomePage() {
                 var i = 0;
                 document.querySelectorAll("article").forEach((e) => {
                     const a = e.querySelector("h3 a");
-                    if (a) a.textContent = articles[i];
+                    if (a) {
+                        getArticleDetails(articles[i], (title, _, __) => {
+                            a.textContent = "CHANGED: " + title;
+                        });
+                        i = (i + 1) % articles.length;
+                    }
                     const b = e.querySelector("p");
-                    if (b) b.textContent = articles[i];
-                    i = (i + 1) % articles.length;
+                    if (b) {
+                        getArticleDetails(articles[i], (title, _, __) => {
+                            b.textContent = "CHANGED: " + title;
+                        });
+                        i = (i + 1) % articles.length;
+                    }
                 });
             });
             break;
@@ -129,20 +152,28 @@ function switchHomePage() {
 
                 var i = 0;
                 document.querySelectorAll(".title a").forEach((e) => {
-                    e.textContent = articles[i];
+                    getArticleDetails(articles[i], (title, _, __) => {
+                        e.textContent = "CHANGED: " + title;
+                    });
                     i = (i + 1) % articles.length;
                 });
                 document.querySelectorAll(".title-ddd").forEach((e) => {
-                    e.textContent = articles[i];
+                    getArticleDetails(articles[i], (title, _, __) => {
+                        e.textContent = "CHANGED: " + title;
+                    });
                     i = (i + 1) % articles.length;
                 });
                 document.querySelectorAll(".stansberry_item a").forEach((e) => {
-                    e.textContent = articles[i];
+                    getArticleDetails(articles[i], (title, _, __) => {
+                        e.textContent = "CHANGED: " + title;
+                    });
                     i = (i + 1) % articles.length;
                 });
                 document.querySelectorAll(".article-content").forEach((e) => {
-                    e.querySelector("h3 a").textContent = articles[i];
-                    e.querySelector("h4").textContent = articles[i];
+                    getArticleDetails(articles[i], (title, blurb, _) => {
+                        elSet(e.querySelector("h3 a"), "CHANGED: " + title);
+                        elSet(e.querySelector("h4"), "BLURB: " + blurb);
+                    });
                     i = (i + 1) % articles.length;
                 });
             });
@@ -153,28 +184,31 @@ function switchHomePage() {
                 const articles = data["www.theonion.com"];
 
                 var i = 0;
-
-                document.querySelectorAll(".c-cover-story__content").forEach((e) => {
-                    e.querySelector("h1 a").textContent = articles[i];
-                    e.querySelector("p").textContent = articles[i];
-                    i = (i + 1) % articles.length;
-                });
-
                 document.querySelectorAll("article").forEach((e) => {
-                    const a = e.querySelector("h2 a");
-                    if (a) a.textContent = articles[i];
+                    getArticleDetails(articles[i], (title, blurb, __) => {
+                        elSet(e.querySelector("h2 a"), "CHANGED: " + title);
 
-                    const b = e.querySelector("p");
-                    if (b) b.textContent = articles[i];
+                        elSet(e.querySelector("h3 a"), "CHANGED: " + title);
 
-                    const c = e.querySelector("h3 a");
-                    if (c) c.textContent = articles[i];
+                        elSet(e.querySelector("p"), "BLURB: " + title);
+                    });
 
                     i = (i + 1) % articles.length;
                 });
 
                 document.querySelectorAll(".c-popular__link").forEach((e) => {
-                    e.textContent = articles[i];
+                    getArticleDetails(articles[i], (title, _, __) => {
+                        e.textContent = "CHANGED: " + title;
+                    });
+                    i = (i + 1) % articles.length;
+                });
+
+
+                document.querySelectorAll(".c-cover-story__content").forEach((e) => {
+                    getArticleDetails(articles[i], (title, blurb, _) => {
+                        elSet(e.querySelector("h1 a"), "CHANGED: " + title);
+                        elSet(e.querySelector("p"), "BLURB: " + blurb);
+                    });
                     i = (i + 1) % articles.length;
                 });
             });
@@ -186,13 +220,10 @@ function switchHomePage() {
 
                 var i = 0;
                 document.querySelectorAll("article").forEach((e) => {
-                    console.log(`Article ${i}: ${articles[i]}`);
-                    const a = e.querySelector("h4");
-                    if (a) a.textContent = articles[i];
-
-                    const b = e.querySelector("p");
-                    if (b) b.textContent = articles[i];
-
+                    getArticleDetails(articles[i], (title, blurb, _) => {
+                        elSet(e.querySelector("h4"), "CHANGED: " + title);
+                        elSet(e.querySelector("p"), "BLURB: " + blurb);
+                    });
                     i = (i + 1) % articles.length;
                 });
             });
@@ -320,6 +351,11 @@ function getArticleDetails(fullpath, callback) {
         console.log(fullpath);
         console.log(data[fullpath][0]);
         console.log(data[fullpath][1]);
-        callback(data[fullpath][0], data[fullpath][1]);
+        console.log(data[fullpath][2]);
+        callback(data[fullpath][0], data[fullpath][1], data[fullpath][2]);
     });
+}
+
+function elSet(el, text) {
+    if (el) el.textContent = text;
 }

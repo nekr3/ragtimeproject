@@ -105,8 +105,8 @@ ALL_SITES.forEach((val) => {
 
         articleLinks.forEach((fullpath) => {
             if (fullpath.startsWith("https://" + url)) {
-                getArticleDetails(url, fullpath, (title, article) => {
-                    chrome.storage.local.set({[fullpath]: [title, article]});
+                getArticleDetails(url, fullpath, (title, blurb, article) => {
+                    chrome.storage.local.set({[fullpath]: [title, blurb, article]});
                 });
             }
         });
@@ -123,77 +123,93 @@ function getArticleDetails(host, fullpath, callback) {
         const doc = this.responseXML;
 
         var fullTitle = "";
+        var fullBlurb = "";
         var fullArticle = "";
 
         console.log(`I AM AT ${fullpath}`);
         switch (host) {
-            case "www.foxnews.com":
-                fullTitle = doc.querySelector(".headline").textContent;
+            case "www.foxnews.com": //TODO VIDEOS
+                fullTitle = elText(doc.querySelector(".headline"));
                 doc.querySelectorAll(".article-body p").forEach((e) => {
                     fullArticle += e.textContent + "\n";
                 });
+                fullBlurb = fullArticle.substring(0, 200).replace(/\n/g, " ");
                 break;
             case "www.vox.com":
-                fullTitle = doc.querySelector(".c-page-title").textContent;
+                fullTitle = elText(doc.querySelector(".c-page-title"));
+                fullBlurb = elText(doc.querySelector(".c-entry-summary"));
                 doc.querySelectorAll(".c-entry-content p").forEach((e) => {
                     fullArticle += e.textContent + "\n";
                 });
                 break;
-            case "www.msnbc.com":
-                fullTitle = doc.querySelector(".headline___CuovH").textContent;
+            case "www.msnbc.com": //TODO NO TITLES
+                fullTitle = elText(doc.querySelector(".headline___CuovH"));
                 doc.querySelectorAll(".article-body p").forEach((e) => {
                     fullArticle += e.textContent + "\n";
                 });
+                fullBlurb = fullArticle.substring(0, 200).replace(/\n/g, " ");
                 break;
             case "www.breitbart.com":
-                fullTitle = doc.querySelector(".the-article header h1").textContent;
+                fullTitle = elText(doc.querySelector(".the-article header h1"));
+                fullBlurb = elText(doc.querySelector(".subheading"));
                 doc.querySelectorAll(".entry-content p").forEach((e) => {
                     fullArticle += e.textContent + "\n";
                 });
                 break;
             case "www.cnn.com":
-                fullTitle = doc.querySelector(".pg-headline").textContent;
+                fullTitle = elText(doc.querySelector(".pg-headline"));
                 doc.querySelectorAll(".zn-body__paragraph").forEach((e) => {
                     fullArticle += e.textContent + "\n";
                 });
+                fullBlurb = fullArticle.substring(0, 200).replace(/\n/g, " ");
                 break;
             case "www.wsj.com": //TODO CAN'T DO
-                fullTitle = doc.querySelector(".wsj-article-headline").textContent;
+                fullTitle = elText(doc.querySelector(".wsj-article-headline"));
                 doc.querySelectorAll(".zn-body__paragraph").forEach((e) => {
                     fullArticle += e.textContent + "\n";
                 });
+                fullBlurb = fullArticle.substring(0, 200).replace(/\n/g, " ");
                 break;
             case "www.nytimes.com": //TODO CAN'T DO
-                fullTitle = doc.querySelector(".pg-headline").textContent;
+                fullTitle = elText(doc.querySelector(".pg-headline"));
                 doc.querySelectorAll(".zn-body__paragraph").forEach((e) => {
                     fullArticle += e.textContent + "\n";
                 });
+                fullBlurb = fullArticle.substring(0, 200).replace(/\n/g, " ");
                 break;
             case "www.infowars.com":
-                fullTitle = doc.querySelector(".entry-title").textContent;
+                fullTitle = elText(doc.querySelector(".entry-title"));
+                fullBlurb = elText(doc.querySelector(".entry-subtitle"));
                 doc.querySelectorAll("article p").forEach((e) => {
                     fullArticle += e.textContent + "\n";
                 });
                 break;
             case "www.theatlantic.com":
-                fullTitle = doc.querySelector(".c-article-header__hed").textContent;
+                fullTitle = elText(doc.querySelector(".c-article-header__hed"));
+                fullBlurb = elText(doc.querySelector(".c-dek"));
                 doc.querySelectorAll(".l-article__section p").forEach((e) => {
                     fullArticle += e.textContent + "\n";
                 });
                 break;
             case "www.theonion.com":
-                fullTitle = doc.querySelector("header a").textContent;
+                fullTitle = elText(doc.querySelector("header a"));
                 doc.querySelectorAll(".js_post-content p").forEach((e) => {
                     fullArticle += e.textContent + "\n";
                 });
+                fullBlurb = fullArticle.substring(0, 200).replace(/\n/g, " ");
                 break;
         }
 
         console.log(`${fullTitle}`);
+        console.log(`${fullBlurb}`);
         console.log(`${fullArticle}`);
-        callback(fullTitle, fullArticle);
+        callback(fullTitle, fullBlurb, fullArticle);
     };
     xhr.responseType = "document";
     xhr.open("GET", fullpath);
     xhr.send();
+}
+
+function elText(el) {
+    return (el) ? el.textContent : "";
 }
