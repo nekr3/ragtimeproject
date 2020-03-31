@@ -17,13 +17,14 @@
     "https://www.foxnews.com/*",
     "https://www.vox.com/*",
     "https://www.msnbc.com/*",
+    "https://www.nbcnew.com/*",
     "https://www.breitbart.com/*",
     "https://www.cnn.com/*",
     "https://www.wsj.com/*",
     "https://www.nytimes.com/*",
     "https://www.infowars.com/*",
     "https://www.theatlantic.com/*",
-    "https://www.theonion.com/*"
+    "https://*.theonion.com/*"
   ],
   "content_scripts": [
     {
@@ -31,13 +32,14 @@
         "https://www.foxnews.com/*",
         "https://www.vox.com/*",
         "https://www.msnbc.com/*",
+        "https://www.nbcnews.com/*",
         "https://www.breitbart.com/*",
         "https://www.cnn.com/*",
         "https://www.wsj.com/*",
         "https://www.nytimes.com/*",
         "https://www.infowars.com/*",
         "https://www.theatlantic.com/*",
-        "https://www.theonion.com/*"
+        "https://*.theonion.com/*"
       ],
       "js": [
         "js/content.js"
