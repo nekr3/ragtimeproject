@@ -44,8 +44,8 @@ function switchHomePage() {
                     console.log("looking for article " + articles[i]);
 
                     getArticleDetails(articles[i], (title, blurb, _) => {
-                        elSet(e.querySelector(".c-entry-box--compact__title a"), "CHANGED: " + title);
-                        elSet(e.querySelector(".c-entry-box--compact__dek"), "BLURB: " + blurb);
+                        elSet(e.querySelector(".c-entry-box--compact__title a"), title);
+                        elSet(e.querySelector(".c-entry-box--compact__dek"), blurb);
                     });
 
                     i = (i + 1) % articles.length;
@@ -72,8 +72,8 @@ function switchHomePage() {
                 var i = 0;
                 document.querySelectorAll("article").forEach((e) => {
                     getArticleDetails(articles[i], (title, blurb, _) => {
-                        elSet(e.querySelector("h2 a"), "CHANGED: " + title);
-                        elSet(e.querySelector(".excerpt p"), "BLURB: " + blurb);
+                        elSet(e.querySelector("h2 a"), title);
+                        elSet(e.querySelector(".excerpt p"), blurb);
                     });
                     i = (i + 1) % articles.length;
                 });
@@ -220,8 +220,8 @@ function switchHomePage() {
                 document.querySelectorAll(".gs-c-promo-heading").forEach((e) => {
                     if (e.querySelector(".gs-c-promo-heading__title")) console.log("BBCCCCCCCC: " + e.querySelector(".gs-c-promo-heading__title").textContent);
                     getArticleDetails(articles[i], (title, blurb, __) => {
-                        elSet(e.querySelector(".gs-c-promo-heading__title"), "CHANGED: " + title);
-                        elSet(e.parentElement.querySelector(".gs-c-promo-summary"), "BLURB: " + blurb);
+                        elSet(e.querySelector(".gs-c-promo-heading__title"), title);
+                        elSet(e.parentElement.querySelector(".gs-c-promo-summary"), blurb);
                     });
                     i = (i + 1) % articles.length;
                 });
@@ -233,8 +233,8 @@ function switchHomePage() {
 				var i = 0;
 				document.querySelectorAll(".teaser").forEach((e) => {
 					getArticleDetails(articles[i], (title, blurb, __) => {
-						elSet(e.querySelector(".teaser__text .teaser__headline"), "CHANGED: " + title);
-						elSet(e.querySelector(".teaser__text .teaser__description"), "BLURB: " + blurb);
+						elSet(e.querySelector(".teaser__text .teaser__headline"), title);
+						elSet(e.querySelector(".teaser__text .teaser__description"), blurb);
 					});
                     i = (i + 1) % articles.length;
 				});
@@ -246,8 +246,8 @@ function switchHomePage() {
 				var i = 0;
 				document.querySelectorAll(".item__title-wrapper").forEach((e) => {
 					getArticleDetails(articles[i], (title, blurb, __) => {
-						elSet(e.querySelector(".item__hed"), "CHANGED: " + title);
-						elSet(e.querySelector(".item__dek"), "BLURB: " + blurb);
+						elSet(e.querySelector(".item__hed"), title);
+						elSet(e.querySelector(".item__dek"), blurb);
 					});
                     i = (i + 1) % articles.length;
 				});
