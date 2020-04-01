@@ -261,10 +261,10 @@ function getArticleDetails(host, fullpath, callback) {
 }
 
 function blurbify(article) {
-    var blurb = article.substring(0, 150).replace(/<br>/g, " ");
-    for (var i = 150; article.charAt(i) !== ' ' && i < 200; i++) blurb += article.charAt(i);
-    //console.log("blurbified" + blurb);
-    return blurb + "...";
+	console.log("hihi");
+	var blurb = article.substring(0, 150).replace(/<br>/g, " ");
+	for (var i = 150; article.charAt(i) !== ' ' && i < 200; i++) blurb += article.charAt(i);
+	return blurb.replace(/<br>/g, " ") + "...";
 }
 
 function elText(el) {
