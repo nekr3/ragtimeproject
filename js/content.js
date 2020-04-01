@@ -221,7 +221,7 @@ function switchHomePage() {
 			});
 			break;
 		case "economist":
-			alert("hello?");
+			//alert("hello?");
 			chrome.storage.local.get("bbc", (data) => {
 				const articles = data["bbc"][0];
 				var i = 0;
@@ -236,8 +236,16 @@ function switchHomePage() {
 			break;
 		case "cbsnews":
 			//alert("hello?");
-			document.querySelectorAll(".item__hed").forEach((e) => {
-				elSet(e, "haha");
+			chrome.storage.local.get("economist", (data) => {
+				const articles = data["economist"][0];
+				var i = 0;
+				document.querySelectorAll(".item__title-wrapper").forEach((e) => {
+					getArticleDetails(articles[i], (title, blurb, __) => {
+						elSet(e.querySelector(".item__hed"), "CHANGED: " + title);
+						elSet(e.querySelector(".item__dek"), "BLURB: " + blurb);
+					});
+                    i = (i + 1) % articles.length;
+				});
 			});
 			break;
     }
