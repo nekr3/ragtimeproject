@@ -24,7 +24,8 @@
     "https://www.nytimes.com/*",
     "https://www.infowars.com/*",
     "https://www.theatlantic.com/*",
-    "https://*.theonion.com/*"
+    "https://*.theonion.com/*",
+    "https://www.bbc.com/*"
   ],
   "content_scripts": [
     {
