@@ -1,12 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+table tr {
+  padding-bottom: 3px;
+}
+
 table tr td {
+  border-left: 1px solid red;
   border-right: 1px solid blue;
   color: black;
   padding: 7px;
 }
 
+table tr td: first-of type {
+  border-left: none;
+}
+
 table tr td:last-of-type {
-  border: none;
+  border-right: none;
 }
 
 #bigbody {
