@@ -45,7 +45,6 @@
       "js": [
         "js/content.js",
         "thirdParty/jquery.1.10.2.min.js",
-        "https://kit.fontawesome.com/0907990c7f.js",
       ]
     }
   ],
