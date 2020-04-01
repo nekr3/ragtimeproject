@@ -415,8 +415,51 @@ function switchArticlePage() {
             });
             break;
 		case "bbc":
-			alert("omg were at bbc now");
-			break;
+            chrome.storage.local.get(["cbsnews", "bbc"], (data) => {
+                const cbs = data["cbsnews"][0];
+                const bbc = data["bbc"][1];
+
+                const nextArticle = cbs[bbc.indexOf(PAGEURL) % cbs.length];
+                getArticleDetails(nextArticle, (title, blurb, article) => {
+                    elSet(document.querySelector(".story-body__h1"), title);
+                    document.querySelectorAll("p").forEach((e, i) => {
+                        if (i === 0) e.innerHTML = article;
+                        else elSet(e, "");
+                    });
+                });
+            });
+            break;
+		case "economist":
+            chrome.storage.local.get(["economist", "bbc"], (data) => {
+                const econ = data["economist"][1];
+                const bbc = data["bbc"][0];
+
+                const nextArticle = bbc[econ.indexOf(PAGEURL) % bbc.length];
+                getArticleDetails(nextArticle, (title, blurb, article) => {
+                    elSet(document.querySelector(".article__headline"), title);
+					elSet(document.querySelector(".article__description"), blurb);
+                    document.querySelectorAll(".article__body-text").forEach((e, i) => {
+                        if (i === 0) e.innerHTML = article;
+                        else elSet(e, "");
+                    });
+                });
+            });
+            break;
+		case "cbsnews":
+            chrome.storage.local.get(["cbsnews", "economist"], (data) => {
+                const cbs = data["cbsnews"][1];
+                const econ = data["economist"][0];
+
+                const nextArticle = econ[cbs.indexOf(PAGEURL) % econ.length];
+                getArticleDetails(nextArticle, (title, blurb, article) => {
+                    elSet(document.querySelector(".content__title"), title);
+                    document.querySelectorAll(".content__body p").forEach((e, i) => {
+                        if (i === 0) e.innerHTML = article;
+                        else elSet(e, "");
+                    });
+                });
+            });
+            break;
     }
 }
 
