@@ -230,8 +230,8 @@ function switchHomePage() {
 					getArticleDetails(articles[i], (title, blurb, __) => {
 						elSet(e, "CHANGED: " + title);
 						
-						i = (i + 1) % articles.length;
 					});
+					i = (i + 1) % articles.length;
 				});
 			});
 			break;
