@@ -214,6 +214,12 @@ function switchHomePage() {
                 });
             });
             break;
+        case "bbc":
+            alert("hello?");
+            document.querySelectorAll(".media--primary").forEach((e) => {
+                e.data-bbc-title = "HDHDHDHDH";
+            }
+            break;
     }
 }
 
