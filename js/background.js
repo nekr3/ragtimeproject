@@ -154,7 +154,7 @@ function getArticleDetails(host, fullpath, callback) {
                         fullArticle += e.textContent + "<br><br>";
                     }
                 });
-                fullBlurb = fullArticle.substring(0, 201).replace(/<br>/g, " ") + "...";
+				fullBlurb = blurbify(fullArticle);
                 break;
             case "vox":
                 fullTitle = elText(doc.querySelector(".c-page-title"));
@@ -183,21 +183,21 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".zn-body__paragraph").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ") + "...";
+				fullBlurb = blurbify(fullArticle);
                 break;
             case "wsj": //TODO CAN'T DO
                 fullTitle = elText(doc.querySelector(".wsj-article-headline"));
                 doc.querySelectorAll(".zn-body__paragraph").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ") + "...";
+				fullBlurb = blurbify(fullArticle);
                 break;
             case "nytimes": //TODO CAN'T DO
                 fullTitle = elText(doc.querySelector(".pg-headline"));
                 doc.querySelectorAll(".zn-body__paragraph").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ") + "...";
+				fullBlurb = blurbify(fullArticle);
                 break;
             case "infowars":
                 fullTitle = elText(doc.querySelector(".entry-title"));
@@ -218,7 +218,7 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".js_post-content p").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ") + "...";
+				fullBlurb = blurbify(fullArticle);
                 break;
 			case "bbc":
 				fullTitle = elText(doc.querySelector(".story-body__h1"));
@@ -239,7 +239,7 @@ function getArticleDetails(host, fullpath, callback) {
 				doc.querySelectorAll(".content__body p").forEach((e) => {
 					fullArticle += e.textContent + "<br><br>";
 				});
-                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ") + "...";
+				fullBlurb = blurbify(fullArticle);
 				break;
         }
 
@@ -248,6 +248,14 @@ function getArticleDetails(host, fullpath, callback) {
     xhr.responseType = "document";
     xhr.open("GET", fullpath);
     xhr.send();
+}
+
+function blurbify(article) {
+	console.log("hihi");
+	var blurb = article.substring(0, 150).replace(/<br>/g, " ");
+	for (var i = 150; article.charAt(i) !== ' ' && i < 200; i++) blurb += article.charAt(i);
+	console.log("blurbified" + blurb);
+	return blurb.replace(/<br>/g, " ") + "...";
 }
 
 function elText(el) {
