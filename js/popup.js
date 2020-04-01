@@ -9,6 +9,13 @@ window.onload = function () {
         });
     };
 
+    document.querySelectorAll("a").forEach((e) => {
+        e.onclick = function () {
+            chrome.tabs.create({"url": e.href});
+            return false;
+        }
+    });
+
     setBtn(btn);
 };
 

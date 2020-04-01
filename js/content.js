@@ -56,7 +56,8 @@ function switchHomePage() {
                 document.querySelectorAll(".c-entry-box--compact__body").forEach((e) => {
                     console.log("looking for article " + articles[i]);
 
-                    getArticleDetails(articles[i], (title, blurb, _) => {
+                    getArticleDetails(articles[i], (title, blurb, _, imgSrc) => {
+                        if (e.parentElement.querySelector("img")) e.parentElement.querySelector("img").src = imgSrc;
                         elSet(e.querySelector(".c-entry-box--compact__title a"), title);
                         elSet(e.querySelector(".c-entry-box--compact__dek"), blurb);
                     });
