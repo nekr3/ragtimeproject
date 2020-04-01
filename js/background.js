@@ -152,7 +152,8 @@ function getArticleDetails(host, fullpath, callback) {
         var fullTitle = "";
         var fullBlurb = "";
         var fullArticle = "";
-
+		var imageLink = "";
+		
         switch (host) {
             case "foxnews":
                 fullTitle = elText(doc.querySelector(".headline"));
@@ -169,6 +170,9 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".c-entry-content p").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
+				var thingo = doc.querySelector("source").srcset.split(" ");
+				imageLink = thingo[thingo.length - 2];
+				console.log(imageLink);
                 break;
             case "nbcnews":
             case "msnbc": //TODO NO TITLES
@@ -250,7 +254,7 @@ function getArticleDetails(host, fullpath, callback) {
                 break;
         }
 
-        callback(fullTitle, fullBlurb, fullArticle);
+        callback(fullTitle, fullBlurb, fullArticle, imageLink);
     };
     xhr.onerror = function () {
         callback("", "", "");
@@ -261,9 +265,8 @@ function getArticleDetails(host, fullpath, callback) {
 }
 
 function blurbify(article) {
-	console.log("hihi");
-	var blurb = article.substring(0, 150).replace(/<br>/g, " ");
-	for (var i = 150; article.charAt(i) !== ' ' && i < 200; i++) blurb += article.charAt(i);
+	var blurb = article.substring(0, 100).replace(/<br>/g, " ");
+	for (var i = 100; article.charAt(i) !== ' ' && i < 150; i++) blurb += article.charAt(i);
 	return blurb.replace(/<br>/g, " ") + "...";
 }
 
