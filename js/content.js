@@ -260,6 +260,7 @@ function switchArticlePage() {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
+					elSet(document.querySelector("title"), title);
                 });
             });
             break;
@@ -275,6 +276,7 @@ function switchArticlePage() {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
+					elSet(document.querySelector("title"), title);
                 });
             });
             break;
@@ -291,7 +293,7 @@ function switchArticlePage() {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
-					alert(imageLink);
+					elSet(document.querySelector("title"), title);
                 });
             });
             break;
@@ -307,7 +309,7 @@ function switchArticlePage() {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
-					alert(imageLink);
+					elSet(document.querySelector("title"), title);
                 });
             });
             break;
@@ -325,6 +327,7 @@ function switchArticlePage() {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
+					elSet(document.querySelector("title"), title);
                 });
             });
             break;
@@ -341,6 +344,7 @@ function switchArticlePage() {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
+					elSet(document.querySelector("title"), title);
                 });
             });
             break;
@@ -357,6 +361,7 @@ function switchArticlePage() {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
+					elSet(document.querySelector("title"), title);
                 });
             });
             break;
@@ -372,6 +377,7 @@ function switchArticlePage() {
                         if (i === 1) e.innerHTML = article; //Skip the intro that is bolded
                         else elSet(e, "");
                     });
+					elSet(document.querySelector("title"), title);
                 });
             });
             break;
@@ -388,6 +394,7 @@ function switchArticlePage() {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
+					elSet(document.querySelector("title"), title);
                 });
             });
             break;
@@ -404,6 +411,7 @@ function switchArticlePage() {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
+					elSet(document.querySelector("title"), title);
                 });
             });
             break;
