@@ -1,7 +1,7 @@
 table tr td {
   border-right: 1px solid blue;
   color: black;
-  padding: 10px;
+  padding: 7px;
 }
 
 table tr td:last-of-type {
@@ -10,4 +10,6 @@ table tr td:last-of-type {
 
 #bigbody {
   width: 200px;
+  padding: 20px;
+  font-family: Lato, sans-serif;
 }
