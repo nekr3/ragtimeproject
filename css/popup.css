@@ -10,6 +10,10 @@ table tr td:last-of-type {
 
 #bigbody {
   width: 200px;
-  padding: 20px;
+  padding: 10px;
   font-family: Lato, sans-serif;
+}
+
+h1 {
+  padding: 0;
 }
