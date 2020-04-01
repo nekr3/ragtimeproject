@@ -225,13 +225,12 @@ function switchHomePage() {
 			chrome.storage.local.get("bbc", (data) => {
 				const articles = data["bbc"][0];
 				var i = 0;
-				getArticleDetails(articles[1], (title, blurb, __) => {alert(title);});
-				document.querySelectorAll(".teaser__headline").forEach((e) => {
+				document.querySelectorAll(".teaser").forEach((e) => {
 					getArticleDetails(articles[i], (title, blurb, __) => {
-						elSet(e, "CHANGED: " + title);
-						
+						elSet(e.querySelector(".teaser__text .teaser__headline"), "CHANGED: " + title);
+						elSet(e.querySelector(".teaser__text .teaser__description"), "BLURB: " + blurb);
 					});
-					i = (i + 1) % articles.length;
+                    i = (i + 1) % articles.length;
 				});
 			});
 			break;
