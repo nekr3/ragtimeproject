@@ -292,7 +292,6 @@ function switchArticlePage() {
                         else elSet(e, "");
                     });
 					alert(imageLink);
-					if (document.querySelector("source")) document.querySelector("source").setAttribute(srcset, imageLink);
                 });
             });
             break;
@@ -309,7 +308,6 @@ function switchArticlePage() {
                         else elSet(e, "");
                     });
 					alert(imageLink);
-					if (document.querySelector("img")) document.querySelector("img").setAttribute(srcset, imageLink);
                 });
             });
             break;
