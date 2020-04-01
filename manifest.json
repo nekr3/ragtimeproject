@@ -1,7 +1,7 @@
 {
   "name": "Ragtime Project",
   "version": "1.0",
-  "description": "idk write some cool things",
+  "description": "Swaps news data with those from other sites.",
   "background": {
     "scripts": [
       "js/background.js"
