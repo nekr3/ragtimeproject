@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 table tr td {
   border-right: 1px solid blue;
   color: black;
@@ -12,8 +13,5 @@ table tr td:last-of-type {
   width: 200px;
   padding: 10px;
   font-family: Lato, sans-serif;
-}
-
-h1 {
-  padding: 0;
+  padding-top: 0px;
 }
