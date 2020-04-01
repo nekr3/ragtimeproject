@@ -119,10 +119,10 @@ function bigload(val) {
         var worthyArticles = [];
         var totalLoaded = 0;
         articleLinks.forEach((fullpath) => {
-            getArticleDetails(url, fullpath, (title, blurb, article) => {
+            getArticleDetails(url, fullpath, (title, blurb, article, imageLink) => {
                 totalLoaded++;
                 if (title !== "" && article !== "") {
-                    chrome.storage.local.set({[fullpath]: [title, blurb, article]});
+                    chrome.storage.local.set({[fullpath]: [title, blurb, article, imageLink]});
                     worthyArticles.push(fullpath);
                 }
 
@@ -152,7 +152,8 @@ function getArticleDetails(host, fullpath, callback) {
         var fullTitle = "";
         var fullBlurb = "";
         var fullArticle = "";
-
+		var imageLink = "";
+		
         switch (host) {
             case "foxnews":
                 fullTitle = elText(doc.querySelector(".headline"));
@@ -169,6 +170,8 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".c-entry-content p").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
+				imageLink = highestQual(doc.querySelector("source").srcset);
+				console.log(imageLink);
                 break;
             case "nbcnews":
             case "msnbc": //TODO NO TITLES
@@ -225,6 +228,8 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".js_post-content p").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
+				var imgs = doc.querySelectorAll("img");
+				imageLink = highestQual(imgs[imgs.length-1].data-srcset);
                 fullBlurb = blurbify(fullArticle);
                 break;
             case "bbc":
@@ -250,7 +255,7 @@ function getArticleDetails(host, fullpath, callback) {
                 break;
         }
 
-        callback(fullTitle, fullBlurb, fullArticle);
+        callback(fullTitle, fullBlurb, fullArticle, imageLink);
     };
     xhr.onerror = function () {
         callback("", "", "");
@@ -261,10 +266,14 @@ function getArticleDetails(host, fullpath, callback) {
 }
 
 function blurbify(article) {
-	console.log("hihi");
-	var blurb = article.substring(0, 150).replace(/<br>/g, " ");
-	for (var i = 150; article.charAt(i) !== ' ' && i < 200; i++) blurb += article.charAt(i);
+	var blurb = article.substring(0, 100).replace(/<br>/g, " ");
+	for (var i = 100; article.charAt(i) !== ' ' && i < 150; i++) blurb += article.charAt(i);
 	return blurb.replace(/<br>/g, " ") + "...";
+}
+
+function highestQual(fullthingo) {
+	var thingo = fullthingo.split(", ");
+	return thingo[thingo.length - 1];
 }
 
 function elText(el) {

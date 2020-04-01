@@ -35,3 +35,27 @@ table tr td:last-of-type {
   font-family: Lato, sans-serif;
   padding-top: 0px;
 }
+
+#buttonholder {
+	text-align: center;
+	width: 100%;
+	padding-top: 15px;
+}
+
+button {
+	border-radius: 5px;
+	padding: 7px 15px 7px 15px;
+	background-color: #eee;
+	border: 1px solid black;
+	color: black;
+	outline: none;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #ddd;
+}
+
+button:active {
+	background-color: #ccc;
+}

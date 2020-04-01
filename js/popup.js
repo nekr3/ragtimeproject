@@ -15,7 +15,7 @@ window.onload = function () {
 function setBtn(btn) {
     chrome.storage.local.get("extOn", (data) => {
         var extOn = (data["extOn"] !== undefined) ? data["extOn"] : true;
-        if (!extOn) btn.textContent = "Turn News Switcher On";
-        else btn.textContent = "Turn News Switcher Off";
+        if (!extOn) btn.textContent = "Turn On";
+        else btn.textContent = "Turn Off";
     });
 }
