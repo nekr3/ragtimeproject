@@ -170,8 +170,7 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".c-entry-content p").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-				var thingo = doc.querySelector("source").srcset.split(" ");
-				imageLink = thingo[thingo.length - 2];
+				imageLink = highestQual(doc.querySelector("source").srcset);
 				console.log(imageLink);
                 break;
             case "nbcnews":
@@ -229,6 +228,8 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".js_post-content p").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
+				var imgs = doc.querySelectorAll("img");
+				imageLink = highestQual(imgs[imgs.length-1].data-srcset);
                 fullBlurb = blurbify(fullArticle);
                 break;
             case "bbc":
@@ -268,6 +269,11 @@ function blurbify(article) {
 	var blurb = article.substring(0, 100).replace(/<br>/g, " ");
 	for (var i = 100; article.charAt(i) !== ' ' && i < 150; i++) blurb += article.charAt(i);
 	return blurb.replace(/<br>/g, " ") + "...";
+}
+
+function highestQual(fullthingo) {
+	var thingo = fullthingo.split(", ");
+	return thingo[thingo.length - 1];
 }
 
 function elText(el) {
