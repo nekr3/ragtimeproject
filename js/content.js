@@ -214,6 +214,12 @@ function switchHomePage() {
                 });
             });
             break;
+		case "bbc":
+			alert("hello?");
+			document.querySelectorAll(".media").forEach((e) => {
+				elSet(e.querySelector(".media__content .media__link"), "hahahaha");
+			});
+			break;
     }
 }
 
@@ -372,6 +378,9 @@ function switchArticlePage() {
                 });
             });
             break;
+		case "bbc":
+			alert("omg were at bbc now");
+			break;
     }
 }
 
