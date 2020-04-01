@@ -24,8 +24,6 @@ function switchHomePage() {
                 var i = 0;
                 document.querySelectorAll(".content a").forEach((e) => {
                     if (e.children.length === 0) {
-                        console.log("looking for article " + articles[i]);
-
                         getArticleDetails(articles[i], (title, _, __) => {
                             e.textContent = title;
                         });
@@ -41,7 +39,7 @@ function switchHomePage() {
                 var i = 0;
                 document.querySelectorAll("article").forEach((e) => {
                     getArticleDetails(articles[i], (title, blurb, __) => {
-                        elSet(e.querySelector(".item__hed"), "CHANGED" + title);
+                        elSet(e.querySelector(".item__hed"), title);
                         elSet(e.querySelector(".item__dek"), blurb);
                     });
                     i = (i + 1) % articles.length;
@@ -54,10 +52,7 @@ function switchHomePage() {
 
                 var i = 0;
                 document.querySelectorAll(".c-entry-box--compact__body").forEach((e) => {
-                    console.log("looking for article " + articles[i]);
-
-                    getArticleDetails(articles[i], (title, blurb, _, imgSrc) => {
-                        if (e.parentElement.querySelector("img")) e.parentElement.querySelector("img").src = imgSrc;
+                    getArticleDetails(articles[i], (title, blurb, _) => {
                         elSet(e.querySelector(".c-entry-box--compact__title a"), title);
                         elSet(e.querySelector(".c-entry-box--compact__dek"), blurb);
                     });
@@ -87,7 +82,7 @@ function switchHomePage() {
                 var i = 0;
                 document.querySelectorAll(".showDot___34ZrJ a").forEach((e) => {
                     getArticleDetails(articles[i], (title, _, __) => {
-                        e.textContent = "CHANGED" + title;
+                        e.textContent = title;
                     });
                     i = (i + 1) % articles.length;
                 });
@@ -284,15 +279,13 @@ function switchArticlePage() {
                 const vox = data["vox"][1];
 
                 const nextArticle = onion[vox.indexOf(PAGEURL) % onion.length];
-                getArticleDetails(nextArticle, (title, blurb, article, imageLink) => {
+                getArticleDetails(nextArticle, (title, blurb, article) => {
                     elSet(document.querySelector(".c-page-title"), title);
                     elSet(document.querySelector(".c-entry-summary"), blurb);
                     document.querySelectorAll(".c-entry-content p").forEach((e, i) => {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
-					alert(imageLink);
-					if (document.querySelector("source")) document.querySelector("source").setAttribute(srcset, imageLink);
                 });
             });
             break;
@@ -302,14 +295,12 @@ function switchArticlePage() {
                 const onion = data["theonion"][1];
 
                 const nextArticle = vox[onion.indexOf(PAGEURL) % vox.length];
-                getArticleDetails(nextArticle, (title, blurb, article, imageLink) => {
+                getArticleDetails(nextArticle, (title, blurb, article) => {
                     elSet(document.querySelector("header a"), title);
                     document.querySelectorAll(".js_post-content p").forEach((e, i) => {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
-					alert(imageLink);
-					if (document.querySelector("img")) document.querySelector("img").setAttribute(srcset, imageLink);
                 });
             });
             break;
@@ -444,12 +435,7 @@ function switchArticlePage() {
 
 function getArticleDetails(fullpath, callback) {
     chrome.storage.local.get(fullpath, (data) => {
-        console.log(fullpath);
-        console.log(data[fullpath][0]);
-        console.log(data[fullpath][1]);
-        console.log(data[fullpath][2]);
-        console.log(data[fullpath][3]);
-        callback(data[fullpath][0], data[fullpath][1], data[fullpath][2], data[fullpath][3]);
+        callback(data[fullpath][0], data[fullpath][1], data[fullpath][2]);
     });
 }
 
