@@ -2,14 +2,13 @@ const HOSTURL = document.location.host.split(".")[1];
 const PAGEURL = document.location.protocol + "//" + document.location.host + document.location.pathname;
 
 //if (confirm(`I AM HEREEEEE at ${HOSTURL}, ${PAGEURL}`)) {
-    if (document.location.pathname === "/") switchHomePage();
+    if (document.location.pathname === "/" || PAGEURL === "https://www.bbc.com/news") switchHomePage();
     else switchArticlePage();
 //}
 
 function switchHomePage() {
     switch (HOSTURL) {
         case "foxnews":
-            //alert("hello?");
             chrome.storage.local.get("vox", (data) => {
                 const articles = data["vox"][0];
 
@@ -28,7 +27,6 @@ function switchHomePage() {
             });
             break;
         case "vox":
-            //alert("hello?");
             chrome.storage.local.get("foxnews", (data) => {
                 const articles = data["foxnews"][0];
 
@@ -46,7 +44,6 @@ function switchHomePage() {
             });
             break;
         case "msnbc":
-            //alert("hello?");
             chrome.storage.local.get("breitbart", (data) => {
                 const articles = data["breitbart"][0];
 
@@ -60,7 +57,6 @@ function switchHomePage() {
             });
             break;
         case "breitbart":
-            //alert("hello?");
             chrome.storage.local.get("msnbc", (data) => {
                 const articles = data["msnbc"][0];
 
@@ -87,7 +83,6 @@ function switchHomePage() {
             });
             break;
         case "cnn":
-            //alert("hello?");
             chrome.storage.local.get("wsj", (data) => {
                 const articles = data["wsj"][0];
 
@@ -101,7 +96,6 @@ function switchHomePage() {
             });
             break;
         case "wsj": //TODO DOESNT WORK
-            //alert("hello?");
             chrome.storage.local.get("cnn", (data) => {
                 const articles = data["cnn"][0];
 
@@ -125,14 +119,12 @@ function switchHomePage() {
             });
             break;
         case "nytimes":
-            //alert("hello?");
             chrome.storage.local.get("infowars", (data) => {
 
             });
             //TODO idk how 2 do plz help
             break;
         case "infowars":
-            //alert("hello?");
             chrome.storage.local.get("nytimes", (data) => {
                 const articles = data["nytimes"][0];
 
@@ -165,7 +157,6 @@ function switchHomePage() {
             });
             break;
         case "theatlantic":
-            //alert("hello?");
             chrome.storage.local.get("theonion", (data) => {
                 const articles = data["theonion"][0];
 
@@ -200,7 +191,6 @@ function switchHomePage() {
             });
             break;
         case "theonion":
-            //alert("hello?");
             chrome.storage.local.get("theatlantic", (data) => {
                 const articles = data["theatlantic"][0];
 
@@ -215,21 +205,20 @@ function switchHomePage() {
             });
             break;
 		case "bbc":
-			//alert("beebeeceee");
 			chrome.storage.local.get("cbsnews", (data) => {
-				const articles = data["cbsnews"][0];
-				var i = 0;
-				document.querySelectorAll(".media").forEach((e) => {
-					getArticleDetails(articles[i], (title, blurb, __) => {
-						elSet(e.querySelector(".media__content .media__link"), "CHANGED: " + title);
-						elSet(e.querySelector(".media__content .media__summary"), "BLURB: " + blurb);
-					});
+                const articles = data["cbsnews"][0];
+                var i = 0;
+                document.querySelectorAll(".gs-c-promo-heading").forEach((e) => {
+                    if (e.querySelector(".gs-c-promo-heading__title")) console.log("BBCCCCCCCC: " + e.querySelector(".gs-c-promo-heading__title").textContent);
+                    getArticleDetails(articles[i], (title, blurb, __) => {
+                        elSet(e.querySelector(".gs-c-promo-heading__title"), "CHANGED: " + title);
+                        elSet(e.parentElement.querySelector(".gs-c-promo-summary"), "BLURB: " + blurb);
+                    });
                     i = (i + 1) % articles.length;
-				});
-			});
+                });
+            });
 			break;
 		case "economist":
-			//alert("hello?");
 			chrome.storage.local.get("bbc", (data) => {
 				const articles = data["bbc"][0];
 				var i = 0;
@@ -243,7 +232,6 @@ function switchHomePage() {
 			});
 			break;
 		case "cbsnews":
-			alert("hello?");
 			chrome.storage.local.get("economist", (data) => {
 				const articles = data["economist"][0];
 				var i = 0;
@@ -267,7 +255,6 @@ function switchArticlePage() {
                 const fox = data["foxnews"][1];
 
                 const nextArticle = vox[fox.indexOf(PAGEURL) % vox.length];
-                console.log(`REPLACING ${PAGEURL} WITH ${nextArticle}`);
                 getArticleDetails(nextArticle, (title, blurb, article) => {
                     elSet(document.querySelector(".headline"), title);
                     document.querySelectorAll(".article-body > p").forEach((e, i) => {
@@ -414,9 +401,54 @@ function switchArticlePage() {
                 });
             });
             break;
-		case "bbc":
-			alert("omg were at bbc now");
-			break;
+        case "bbc":
+            chrome.storage.local.get(["bbc", "cbsnews"], (data) => {
+                const cbs = data["cbsnews"][0];
+                const bbc = data["bbc"][1];
+
+                const nextArticle = cbs[bbc.indexOf(PAGEURL) % cbs.length];
+                getArticleDetails(nextArticle, (title, blurb, article) => {
+                    elSet(document.querySelector(".story-body__h1"), title);
+                    document.querySelectorAll(".story-body__inner p").forEach((e, i) => {
+                        if (i === 1) e.innerHTML = article; //Skip the intro that is bolded
+                        else elSet(e, "");
+                    });
+                });
+            });
+            break;
+        case "economist":
+            chrome.storage.local.get(["economist", "bbc"], (data) => {
+                const bbc = data["bbc"][0];
+                const eco = data["economist"][1];
+
+                const nextArticle = bbc[eco.indexOf(PAGEURL) % bbc.length];
+                getArticleDetails(nextArticle, (title, blurb, article) => {
+                    elSet(document.querySelector(".article__headline"), title);
+                    elSet(document.querySelector(".article__description"), blurb);
+                    document.querySelectorAll(".article__body-text").forEach((e, i) => {
+                        if (i === 0) e.innerHTML = article;
+                        else elSet(e, "");
+                    });
+                });
+            });
+            break;
+        case "cbsnews":
+            alert("cbs?");
+            chrome.storage.local.get(["cbsnews", "economist"], (data) => {
+                const eco = data["economist"][0];
+                const cbs = data["cbsnews"][1];
+
+                const nextArticle = eco[cbs.indexOf(PAGEURL) % eco.length];
+                alert(nextArticle);
+                getArticleDetails(nextArticle, (title, blurb, article) => {
+                    elSet(document.querySelector(".content__title"), title);
+                    document.querySelectorAll(".content__body p").forEach((e, i) => {
+                        if (i === 0) e.innerHTML = article;
+                        else elSet(e, "");
+                    });
+                });
+            });
+            break;
     }
 }
 
