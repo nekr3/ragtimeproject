@@ -6,4 +6,5 @@
 2.  Expand/unpack the zip file locally (right click on the zip and hit "Expand all").
 3.  Go to "chrome://extensions" and turn developer mode on in the upper right hand corner.
 4.  Hit "Load unpacked" and select the unpacked folder.
-5.  Done!
+5.  Wait ~1-2 minutes for the extension to get all the data it needs.
+6.  Done!
