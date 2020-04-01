@@ -1,15 +1,15 @@
 const HOSTURL = document.location.host.split(".")[1];
 const PAGEURL = document.location.protocol + "//" + document.location.host + document.location.pathname;
 
-if (confirm(`I AM HEREEEEE at ${HOSTURL}, ${PAGEURL}`)) {
+//if (confirm(`I AM HEREEEEE at ${HOSTURL}, ${PAGEURL}`)) {
     if (document.location.pathname === "/") switchHomePage();
     else switchArticlePage();
-}
+//}
 
 function switchHomePage() {
     switch (HOSTURL) {
         case "foxnews":
-            alert("hello?");
+            //alert("hello?");
             chrome.storage.local.get("vox", (data) => {
                 const articles = data["vox"][0];
 
@@ -28,7 +28,7 @@ function switchHomePage() {
             });
             break;
         case "vox":
-            alert("hello?");
+            //alert("hello?");
             chrome.storage.local.get("foxnews", (data) => {
                 const articles = data["foxnews"][0];
 
@@ -46,7 +46,7 @@ function switchHomePage() {
             });
             break;
         case "msnbc":
-            alert("hello?");
+            //alert("hello?");
             chrome.storage.local.get("breitbart", (data) => {
                 const articles = data["breitbart"][0];
 
@@ -60,7 +60,7 @@ function switchHomePage() {
             });
             break;
         case "breitbart":
-            alert("hello?");
+            //alert("hello?");
             chrome.storage.local.get("msnbc", (data) => {
                 const articles = data["msnbc"][0];
 
@@ -87,7 +87,7 @@ function switchHomePage() {
             });
             break;
         case "cnn":
-            alert("hello?");
+            //alert("hello?");
             chrome.storage.local.get("wsj", (data) => {
                 const articles = data["wsj"][0];
 
@@ -101,7 +101,7 @@ function switchHomePage() {
             });
             break;
         case "wsj": //TODO DOESNT WORK
-            alert("hello?");
+            //alert("hello?");
             chrome.storage.local.get("cnn", (data) => {
                 const articles = data["cnn"][0];
 
@@ -125,14 +125,14 @@ function switchHomePage() {
             });
             break;
         case "nytimes":
-            alert("hello?");
+            //alert("hello?");
             chrome.storage.local.get("infowars", (data) => {
 
             });
             //TODO idk how 2 do plz help
             break;
         case "infowars":
-            alert("hello?");
+            //alert("hello?");
             chrome.storage.local.get("nytimes", (data) => {
                 const articles = data["nytimes"][0];
 
@@ -165,7 +165,7 @@ function switchHomePage() {
             });
             break;
         case "theatlantic":
-            alert("hello?");
+            //alert("hello?");
             chrome.storage.local.get("theonion", (data) => {
                 const articles = data["theonion"][0];
 
@@ -200,7 +200,7 @@ function switchHomePage() {
             });
             break;
         case "theonion":
-            alert("hello?");
+            //alert("hello?");
             chrome.storage.local.get("theatlantic", (data) => {
                 const articles = data["theatlantic"][0];
 
@@ -215,9 +215,21 @@ function switchHomePage() {
             });
             break;
 		case "bbc":
-			alert("hello?");
+			//alert("beebeeceee");
 			document.querySelectorAll(".media").forEach((e) => {
 				elSet(e.querySelector(".media__content .media__link"), "hahahaha");
+			});
+			break;
+		case "economist":
+			//alert("hello?");
+			document.querySelectorAll(".teaser__headline").forEach((e) => {
+				elSet(e, "haha");
+			});
+			break;
+		case "cbsnews":
+			//alert("hello?");
+			document.querySelectorAll(".item__hed").forEach((e) => {
+				elSet(e, "haha");
 			});
 			break;
     }

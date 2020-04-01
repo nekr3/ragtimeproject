@@ -27,7 +27,9 @@
     "https://www.infowars.com/*",
     "https://www.theatlantic.com/*",
     "https://www.theonion.com/*",
-	"https://www.bbc.com/*"
+	"https://www.bbc.com/*",
+	 "https://www.cbsnews.com/*",
+	"https://www.economist.com/*"
   ],
   "content_scripts": [
     {
@@ -42,7 +44,9 @@
         "https://www.infowars.com/*",
         "https://www.theatlantic.com/*",
         "https://www.theonion.com/*",
-		"https://www.bbc.com/*"
+		"https://www.bbc.com/*",
+		"https://www.cbsnews.com/*",
+	    "https://www.economist.com/*"
       ],
       "js": [
         "js/content.js"
