@@ -279,7 +279,7 @@ function switchArticlePage() {
                 const vox = data["vox"][1];
 
                 const nextArticle = fox[vox.indexOf(PAGEURL) % fox.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
+                getArticleDetails(nextArticle, (title, blurb, article, imageLink) => {
                     elSet(document.querySelector(".c-page-title"), title);
                     elSet(document.querySelector(".c-entry-summary"), blurb);
                     document.querySelectorAll(".c-entry-content p").forEach((e, i) => {

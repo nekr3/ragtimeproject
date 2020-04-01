@@ -119,10 +119,10 @@ function bigload(val) {
         var worthyArticles = [];
         var totalLoaded = 0;
         articleLinks.forEach((fullpath) => {
-            getArticleDetails(url, fullpath, (title, blurb, article) => {
+            getArticleDetails(url, fullpath, (title, blurb, article, imageLink) => {
                 totalLoaded++;
                 if (title !== "" && article !== "") {
-                    chrome.storage.local.set({[fullpath]: [title, blurb, article]});
+                    chrome.storage.local.set({[fullpath]: [title, blurb, article, imageLink]});
                     worthyArticles.push(fullpath);
                 }
 
