@@ -216,8 +216,16 @@ function switchHomePage() {
             break;
 		case "bbc":
 			//alert("beebeeceee");
-			document.querySelectorAll(".media").forEach((e) => {
-				elSet(e.querySelector(".media__content .media__link"), "hahahaha");
+			chrome.storage.local.get("cbs", (data) => {
+				const articles = data["cbs"][0];
+				var i = 0;
+				document.querySelectorAll(".media").forEach((e) => {
+					getArticleDetails(articles[i], (title, blurb, __) => {
+						elSet(e.querySelector(".media__content .media__link"), "CHANGED: " + title);
+						elSet(e.querySelector(".media__content .media__summary"), "BLURB: " + blurb);
+					});
+                    i = (i + 1) % articles.length;
+				});
 			});
 			break;
 		case "economist":
