@@ -239,7 +239,6 @@ function switchHomePage() {
 			chrome.storage.local.get("economist", (data) => {
 				const articles = data["economist"][0];
 				var i = 0;
-				alert("hihihi");
 				document.querySelectorAll(".item__title-wrapper").forEach((e) => {
 					getArticleDetails(articles[i], (title, blurb, __) => {
 						elSet(e.querySelector(".item__hed"), "CHANGED: " + title);

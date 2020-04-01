@@ -1,6 +1,6 @@
 console.log("Hi there!");
 
-const ALL_SITES = ["https://www.foxnews.com/", "https://www.vox.com/", "https://www.msnbc.com/", "https://www.breitbart.com/", "https://www.cnn.com/", "https://www.wsj.com/", "https://www.nytimes.com/", "https://www.infowars.com/", "https://www.theatlantic.com/", "https://www.theonion.com/", "https://www.bbc.com/"];
+const ALL_SITES = ["https://www.foxnews.com/", "https://www.vox.com/", "https://www.msnbc.com/", "https://www.breitbart.com/", "https://www.cnn.com/", "https://www.wsj.com/", "https://www.nytimes.com/", "https://www.infowars.com/", "https://www.theatlantic.com/", "https://www.theonion.com/", "https://www.bbc.com/", "https://www.economist.com/", "https://www.cbsnews.com/"];
 
 chrome.storage.local.clear();
 
@@ -97,6 +97,7 @@ ALL_SITES.forEach((val) => {
 				doc.querySelectorAll(".headline-link").forEach((e) => {
 					articleLinks.push(e.href);
 				});
+				console.log("aaaaaaaaaaaaaaaaa");
 				break;
 			case "cbsnews":
 				doc.querySelectorAll("ul .site-nav__item--type-article a").forEach((e) => {
@@ -109,9 +110,9 @@ ALL_SITES.forEach((val) => {
         articleLinks.forEach((fullpath, i) => {
             getArticleDetails(url, fullpath, (title, blurb, article) => {
                 if (title !== "" && article !== "") {
-                    console.log("===========================================");
-                    console.log(`${fullpath}\n${title}\n${blurb}\n${article}`);
-                    console.log("===========================================");
+                    //console.log("===========================================");
+                    //console.log(`${fullpath}\n${title}\n${blurb}\n${article}`);
+                    //console.log("===========================================");
 
                     chrome.storage.local.set({[fullpath]: [title, blurb, article]});
                     worthyArticles.push(fullpath);
@@ -119,8 +120,8 @@ ALL_SITES.forEach((val) => {
 
                 if (i === articleLinks.length - 1) {
                     chrome.storage.local.set({[url]: [worthyArticles, articleLinks]}, () => {
-                        console.log(`Read in articles for ${url}`);
-                        console.log(articleLinks);
+                        //console.log(`Read in articles for ${url}`);
+                        //console.log(articleLinks);
                     });
                 }
             });
@@ -133,8 +134,8 @@ ALL_SITES.forEach((val) => {
 
 
 function getArticleDetails(host, fullpath, callback) {
-    console.log(`https://.*${host}`);
-    console.log(fullpath);
+    //console.log(`https://.*${host}`);
+    //console.log(fullpath);
     if (!new RegExp(`https://.*${host}`).test(fullpath)) return callback("", "", "");
 
     const xhr = new XMLHttpRequest();
