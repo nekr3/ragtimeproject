@@ -1,7 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
+table {
+  width: 100%;
+  text-align: center;
+}
+
 table tr {
   padding-bottom: 3px;
+  border-bottom: 1px solid black;
+  width: 100%;
+}
+
+table tr:last-of-type {
+  border: none;
 }
 
 table tr td {
