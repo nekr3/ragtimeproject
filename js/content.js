@@ -2,8 +2,17 @@ const HOSTURL = document.location.host.split(".")[1];
 const PAGEURL = document.location.protocol + "//" + document.location.host + document.location.pathname;
 
 //if (confirm(`I AM HEREEEEE at ${HOSTURL}, ${PAGEURL}`)) {
-    if (document.location.pathname === "/" || PAGEURL === "https://www.bbc.com/news") switchHomePage();
-    else switchArticlePage();
+chrome.storage.local.get("extOn", (data) => {
+    if (data["extOn"]) {
+        if (document.location.pathname === "/" || PAGEURL === "https://www.bbc.com/news") switchHomePage();
+        else switchArticlePage();
+    }
+});
+
+chrome.storage.local.get("lastLoad", (data) => {
+    if (Date.now() - data["lastLoad"] > 30 * 60 * 1000) chrome.runtime.reload();
+});
+
 //}
 
 function switchHomePage() {

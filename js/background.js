@@ -3,9 +3,19 @@ console.log("Hi there!");
 const ALL_SITES = ["https://www.foxnews.com/", "https://www.vox.com/", "https://www.msnbc.com/", "https://www.breitbart.com/", "https://www.cnn.com/", "https://www.wsj.com/", "https://www.nytimes.com/", "https://www.infowars.com/", "https://www.theatlantic.com/", "https://www.theonion.com/", "https://www.bbc.com/news", "https://www.economist.com/", "https://www.cbsnews.com/"];
 //const ALL_SITES = ["https://www.bbc.com/news"];
 
-chrome.storage.local.clear();
+var toggled;
+chrome.storage.local.get("extOn", (data) => {
+    toggled = (data["extOn"] !== undefined) ? data["extOn"] : true;
+    chrome.storage.local.clear();
 
-ALL_SITES.forEach((val) => {
+    chrome.storage.local.set({"extOn": toggled});
+    chrome.storage.local.set({"lastLoad": [Date.now()]});
+    ALL_SITES.forEach((val) => {
+        bigload(val);
+    });
+});
+
+function bigload(val) {
     const xhr = new XMLHttpRequest();
     xhr.onload = function () {
         const doc = this.responseXML;
@@ -106,64 +116,29 @@ ALL_SITES.forEach((val) => {
                 break;
         }
 
-        loopArticles(url, articleLinks, [], 0);
-        /*let worthyArticles = [];
-        articleLinks.forEach((fullpath, i) => {
+        var worthyArticles = [];
+        var totalLoaded = 0;
+        articleLinks.forEach((fullpath) => {
             getArticleDetails(url, fullpath, (title, blurb, article) => {
+                totalLoaded++;
                 if (title !== "" && article !== "") {
                     chrome.storage.local.set({[fullpath]: [title, blurb, article]});
-
                     worthyArticles.push(fullpath);
-                    /!*if(url === "bbc"){
-                        console.log("===========================================");
-                        console.log(`${fullpath}\n${title}\n${blurb}\n${article}`);
-                        console.log(i + ", " + worthyArticles.length);
-                        console.log("===========================================");
-                    }*!/
                 }
 
-                console.log("ON LOOP " + i + " " + worthyArticles.length);
-                if (i === articleLinks.length - 1) {
-                    console.log("SETTING " + worthyArticles.length + " ARTICLES FOR " + url);
-                    console.log(i);
-                    chrome.storage.local.set({[val]: [worthyArticles, articleLinks]}, () => {
+                if (totalLoaded === articleLinks.length) {
+                    chrome.storage.local.set({[url]: [worthyArticles, articleLinks]}, () => {
                         //console.log(`Read in articles for ${url}`);
                         //console.log(articleLinks);
                     });
                 }
             });
-        });*/
+        });
     };
     xhr.responseType = "document";
     xhr.open("GET", val);
     xhr.send();
-});
-
-function loopArticles(url, all, worth, i) {
-    if (i === all.length) {
-        chrome.storage.local.set({[url]: [worth, all]}, () => {
-            console.log("Loaded " + url);
-        });
-        return;
-    }
-
-    const fullpath = all[i];
-    getArticleDetails(url, fullpath, (title, blurb, article) => {
-        if (title !== "" && article !== "") {
-            chrome.storage.local.set({[fullpath]: [title, blurb, article]});
-
-            worth.push(fullpath);
-            /*console.log("===========================================");
-              console.log(`${fullpath}\n${title}\n${blurb}\n${article}`);
-              console.log(i + ", " + worthyArticles.length);
-              console.log("===========================================");
-            */
-        }
-
-        loopArticles(url, all, worth, i + 1);
-    });
 }
-
 
 function getArticleDetails(host, fullpath, callback) {
     //console.log(`https://.*${host}`);
@@ -186,7 +161,7 @@ function getArticleDetails(host, fullpath, callback) {
                         fullArticle += e.textContent + "<br><br>";
                     }
                 });
-				fullBlurb = blurbify(fullArticle);
+                fullBlurb = blurbify(fullArticle);
                 break;
             case "vox":
                 fullTitle = elText(doc.querySelector(".c-page-title"));
@@ -215,21 +190,21 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".zn-body__paragraph").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-				fullBlurb = blurbify(fullArticle);
+                fullBlurb = blurbify(fullArticle);
                 break;
             case "wsj": //TODO CAN'T DO
                 fullTitle = elText(doc.querySelector(".wsj-article-headline"));
                 doc.querySelectorAll(".zn-body__paragraph").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-				fullBlurb = blurbify(fullArticle);
+                fullBlurb = blurbify(fullArticle);
                 break;
             case "nytimes": //TODO CAN'T DO
                 fullTitle = elText(doc.querySelector(".pg-headline"));
                 doc.querySelectorAll(".zn-body__paragraph").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-				fullBlurb = blurbify(fullArticle);
+                fullBlurb = blurbify(fullArticle);
                 break;
             case "infowars":
                 fullTitle = elText(doc.querySelector(".entry-title"));
@@ -266,7 +241,7 @@ function getArticleDetails(host, fullpath, callback) {
                     if (!e.textContent.startsWith("Editor’s note:")) fullArticle += e.textContent + "<br><br>";
                 });
                 break;
-			case "cbsnews":
+            case "cbsnews":
                 fullTitle = elText(doc.querySelector(".content__title"));
                 doc.querySelectorAll(".content__body p").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
