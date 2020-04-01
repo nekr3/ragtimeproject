@@ -39,9 +39,9 @@ function switchHomePage() {
             chrome.storage.local.get("foxnews", (data) => {
                 const articles = data["foxnews"][0];
                 var i = 0;
-                document.querySelectorAll(".item__title-wrapper").forEach((e) => {
+                document.querySelectorAll("article").forEach((e) => {
                     getArticleDetails(articles[i], (title, blurb, __) => {
-                        elSet(e.querySelector(".item__hed"), title);
+                        elSet(e.querySelector(".item__hed"), "CHANGED" + title);
                         elSet(e.querySelector(".item__dek"), blurb);
                     });
                     i = (i + 1) % articles.length;
@@ -86,7 +86,7 @@ function switchHomePage() {
                 var i = 0;
                 document.querySelectorAll(".showDot___34ZrJ a").forEach((e) => {
                     getArticleDetails(articles[i], (title, _, __) => {
-                        e.textContent = title;
+                        e.textContent = "CHANGED" + title;
                     });
                     i = (i + 1) % articles.length;
                 });
@@ -125,8 +125,8 @@ function switchHomePage() {
             });
             break;
         case "breitbart":
-            chrome.storage.local.get("cnn", (data) => {
-                const articles = data["cnn"][0];
+            chrome.storage.local.get("bbc", (data) => {
+                const articles = data["bbc"][0];
 
                 var i = 0;
                 document.querySelectorAll("article").forEach((e) => {
@@ -150,40 +150,9 @@ function switchHomePage() {
                 });
             });
             break;
-        case "cnn":
+        case "bbc":
             chrome.storage.local.get("breitbart", (data) => {
                 const articles = data["breitbart"][0];
-
-                var i = 0;
-                document.querySelectorAll(".cd__headline-text").forEach((e) => {
-                    getArticleDetails(articles[i], (title, _, __) => {
-                        e.textContent = title;
-                    });
-                    i = (i + 1) % articles.length;
-                });
-            });
-            break;
-        case "wsj": //TODO DOESNT WORK
-            chrome.storage.local.get("bbc", (data) => {
-                const articles = data["bbc"][0];
-
-                var i = 0;
-                document.querySelectorAll("article").forEach((e) => {
-                    getArticleDetails(articles[i], (title, _, __) => {
-                        elSet(e.querySelector("h3 a"), title);
-                    });
-                    i = (i + 1) % articles.length;
-
-                    getArticleDetails(articles[i], (title, _, __) => {
-                        elSet(e.querySelector("p"), title)
-                    });
-                    i = (i + 1) % articles.length;
-                });
-            });
-            break;
-        case "bbc":
-            chrome.storage.local.get("wsj", (data) => {
-                const articles = data["wsj"][0];
                 var i = 0;
                 document.querySelectorAll(".gs-c-promo-heading").forEach((e) => {
                     getArticleDetails(articles[i], (title, blurb, __) => {
@@ -242,6 +211,37 @@ function switchHomePage() {
                 });
             });
             break;
+        /*        case "cnn":
+                    chrome.storage.local.get("breitbart", (data) => {
+                        const articles = data["breitbart"][0];
+
+                        var i = 0;
+                        document.querySelectorAll(".cd__headline-text").forEach((e) => {
+                            getArticleDetails(articles[i], (title, _, __) => {
+                                e.textContent = title;
+                            });
+                            i = (i + 1) % articles.length;
+                        });
+                    });
+                    break;
+                case "wsj": //TODO DOESNT WORK
+                    chrome.storage.local.get("bbc", (data) => {
+                        const articles = data["bbc"][0];
+
+                        var i = 0;
+                        document.querySelectorAll("article").forEach((e) => {
+                            getArticleDetails(articles[i], (title, _, __) => {
+                                elSet(e.querySelector("h3 a"), title);
+                            });
+                            i = (i + 1) % articles.length;
+
+                            getArticleDetails(articles[i], (title, _, __) => {
+                                elSet(e.querySelector("p"), title)
+                            });
+                            i = (i + 1) % articles.length;
+                        });
+                    });
+                    break;*/
     }
 }
 
@@ -342,11 +342,11 @@ function switchArticlePage() {
             });
             break;
         case "breitbart":
-            chrome.storage.local.get(["cnn", "breitbart"], (data) => {
-                const cnn = data["cnn"][0];
+            chrome.storage.local.get(["bbc", "breitbart"], (data) => {
+                const bbc = data["bbc"][0];
                 const breitbart = data["breitbart"][1];
 
-                const nextArticle = cnn[breitbart.indexOf(PAGEURL) % cnn.length];
+                const nextArticle = bbc[breitbart.indexOf(PAGEURL) % bbc.length];
                 getArticleDetails(nextArticle, (title, blurb, article) => {
                     elSet(document.querySelector(".the-article header h1"), title);
                     elSet(document.querySelector(".subheading"), blurb);
@@ -357,42 +357,12 @@ function switchArticlePage() {
                 });
             });
             break;
-        case "cnn":
-            chrome.storage.local.get(["cnn", "breitbart"], (data) => {
-                const breit = data["breitbart"][0];
-                const cnn = data["cnn"][1];
-
-                const nextArticle = breit[cnn.indexOf(PAGEURL) % breit.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
-                    elSet(document.querySelector(".pg-headline"), title);
-                    document.querySelectorAll(".zn-body__paragraph").forEach((e, i) => {
-                        if (i === 0) e.innerHTML = article;
-                        else elSet(e, "");
-                    });
-                });
-            });
-            break;
-        case "wsj":
-            chrome.storage.local.get(["bbc", "wsj"], (data) => {
-                const bbc = data["bbc"][0];
-                const wsj = data["wsj"][1];
-
-                const nextArticle = bbc[wsj.indexOf(PAGEURL) % bbc.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
-                    elSet(document.querySelector(".wsj-article-headline"), title);
-                    document.querySelectorAll(".zn-body__paragraph").forEach((e, i) => {
-                        if (i === 0) e.innerHTML = article;
-                        else elSet(e, "");
-                    });
-                });
-            });
-            break;
         case "bbc":
-            chrome.storage.local.get(["bbc", "wsj"], (data) => {
-                const wsj = data["wsj"][0];
+            chrome.storage.local.get(["bbc", "breitbart"], (data) => {
+                const breit = data["breitbart"][0];
                 const bbc = data["bbc"][1];
 
-                const nextArticle = wsj[bbc.indexOf(PAGEURL) % wsj.length];
+                const nextArticle = breit[bbc.indexOf(PAGEURL) % breit.length];
                 getArticleDetails(nextArticle, (title, blurb, article) => {
                     elSet(document.querySelector(".story-body__h1"), title);
                     document.querySelectorAll("p").forEach((e, i) => {
@@ -434,6 +404,36 @@ function switchArticlePage() {
                 });
             });
             break;
+        /*        case "cnn":
+                    chrome.storage.local.get(["cnn", "breitbart"], (data) => {
+                        const breit = data["breitbart"][0];
+                        const cnn = data["cnn"][1];
+
+                        const nextArticle = breit[cnn.indexOf(PAGEURL) % breit.length];
+                        getArticleDetails(nextArticle, (title, blurb, article) => {
+                            elSet(document.querySelector(".pg-headline"), title);
+                            document.querySelectorAll(".zn-body__paragraph").forEach((e, i) => {
+                                if (i === 0) e.innerHTML = article;
+                                else elSet(e, "");
+                            });
+                        });
+                    });
+                    break;
+                case "wsj":
+                    chrome.storage.local.get(["bbc", "wsj"], (data) => {
+                        const bbc = data["bbc"][0];
+                        const wsj = data["wsj"][1];
+
+                        const nextArticle = bbc[wsj.indexOf(PAGEURL) % bbc.length];
+                        getArticleDetails(nextArticle, (title, blurb, article) => {
+                            elSet(document.querySelector(".wsj-article-headline"), title);
+                            document.querySelectorAll(".zn-body__paragraph").forEach((e, i) => {
+                                if (i === 0) e.innerHTML = article;
+                                else elSet(e, "");
+                            });
+                        });
+                    });
+                    break;*/
     }
 }
 
@@ -443,7 +443,8 @@ function getArticleDetails(fullpath, callback) {
         console.log(data[fullpath][0]);
         console.log(data[fullpath][1]);
         console.log(data[fullpath][2]);
-        callback(data[fullpath][0], data[fullpath][1], data[fullpath][2]);
+        console.log(data[fullpath][3]);
+        callback(data[fullpath][0], data[fullpath][1], data[fullpath][2], data[fullpath][3]);
     });
 }
 

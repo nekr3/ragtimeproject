@@ -1,6 +1,6 @@
 console.log("Hi there!");
 
-const ALL_SITES = ["https://www.foxnews.com/", "https://www.vox.com/", "https://www.msnbc.com/", "https://www.breitbart.com/", "https://www.cnn.com/", "https://www.wsj.com/", "https://www.nytimes.com/", "https://www.infowars.com/", "https://www.theatlantic.com/", "https://www.theonion.com/", "https://www.bbc.com/news", "https://www.economist.com/", "https://www.cbsnews.com/"];
+const ALL_SITES = ["https://www.foxnews.com/", "https://www.vox.com/", "https://www.msnbc.com/", "https://www.breitbart.com/", "https://www.cnn.com/", "https://www.wsj.com/", "https://www.infowars.com/", "https://www.theatlantic.com/", "https://www.theonion.com/", "https://www.bbc.com/news", "https://www.economist.com/", "https://www.cbsnews.com/"];
 //const ALL_SITES = ["https://www.bbc.com/news"];
 
 var toggled;
@@ -48,7 +48,7 @@ function bigload(val) {
                     articleLinks.push(e.href);
                 });
                 break;
-            case "cnn": //TODO DOESN'T WORK
+            /*case "cnn": //TODO DOESN'T WORK
                 doc.querySelectorAll(".cd__headline a").forEach((e) => {
                     articleLinks.push(e.href);
                 });
@@ -57,12 +57,7 @@ function bigload(val) {
                 doc.querySelectorAll("article h3 a").forEach((e) => {
                     articleLinks.push(e.href);
                 });
-                break;
-            case "nytimes":
-
-
-                //TODO idk how 2 do plz help
-                break;
+                break;*/
             case "infowars":
                 doc.querySelectorAll(".title a").forEach((e) => {
                     articleLinks.push(e.href);
@@ -110,8 +105,8 @@ function bigload(val) {
                 });
                 break;
             case "cbsnews":
-                doc.querySelectorAll("article a").forEach((e) => {
-                    articleLinks.push(e.href);
+                doc.querySelectorAll("article").forEach((e) => {
+                    articleLinks.push(e.firstChild.href);
                 });
                 break;
         }
