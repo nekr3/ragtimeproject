@@ -225,6 +225,7 @@ function switchHomePage() {
 			chrome.storage.local.get("bbc", (data) => {
 				const articles = data["bbc"][0];
 				var i = 0;
+				getArticleDetails(articles[1], (title, blurb, __) => {alert(title);});
 				document.querySelectorAll(".teaser__headline").forEach((e) => {
 					getArticleDetails(articles[i], (title, blurb, __) => {
 						elSet(e, "CHANGED: " + title);

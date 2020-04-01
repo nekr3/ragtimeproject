@@ -93,6 +93,16 @@ ALL_SITES.forEach((val) => {
 					articleLinks.push(e.href);
 				});
 				break;
+			case "economist":
+				doc.querySelectorAll(".headline-link").forEach((e) => {
+					articleLinks.push(e.href);
+				});
+				break;
+			case "cbs":
+				doc.querySelectorAll("ul .site-nav__item--type-article a").forEach((e) => {
+					articleLinks.push(e.href);
+				});
+				break;
         }
 		console.log("hewwo");
         var worthyArticles = [];
