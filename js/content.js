@@ -216,8 +216,8 @@ function switchHomePage() {
             break;
 		case "bbc":
 			//alert("beebeeceee");
-			chrome.storage.local.get("cbs", (data) => {
-				const articles = data["cbs"][0];
+			chrome.storage.local.get("cbsnews", (data) => {
+				const articles = data["cbsnews"][0];
 				var i = 0;
 				document.querySelectorAll(".media").forEach((e) => {
 					getArticleDetails(articles[i], (title, blurb, __) => {
