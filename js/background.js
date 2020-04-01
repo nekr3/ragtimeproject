@@ -1,7 +1,7 @@
 console.log("Hi there!");
 
 const ALL_SITES = ["https://www.foxnews.com/", "https://www.vox.com/", "https://www.msnbc.com/", "https://www.breitbart.com/", "https://www.cnn.com/", "https://www.wsj.com/", "https://www.infowars.com/", "https://www.theatlantic.com/", "https://www.theonion.com/", "https://www.bbc.com/news", "https://www.economist.com/", "https://www.cbsnews.com/"];
-//const ALL_SITES = ["https://www.bbc.com/news"];
+//const ALL_SITES = ["https://www.vox.com/"];
 
 var toggled;
 chrome.storage.local.get("extOn", (data) => {
@@ -113,6 +113,7 @@ function bigload(val) {
 
         var worthyArticles = [];
         var totalLoaded = 0;
+        console.log(`Length: ${articleLinks.length}`);
         articleLinks.forEach((fullpath) => {
             getArticleDetails(url, fullpath, (title, blurb, article, imageLink) => {
                 totalLoaded++;
@@ -121,6 +122,7 @@ function bigload(val) {
                     worthyArticles.push(fullpath);
                 }
 
+                console.log(totalLoaded);
                 if (totalLoaded === articleLinks.length) {
                     chrome.storage.local.set({[url]: [worthyArticles, articleLinks]}, () => {
                         //console.log(`Read in articles for ${url}`);
@@ -138,7 +140,7 @@ function bigload(val) {
 function getArticleDetails(host, fullpath, callback) {
     //console.log(`https://.*${host}`);
     //console.log(fullpath);
-    if (!new RegExp(`https://.*${host}`).test(fullpath)) return callback("", "", "");
+    if (!new RegExp(`https://.*${host}`).test(fullpath)) return callback("", "", "", "");
 
     const xhr = new XMLHttpRequest();
     xhr.onload = function () {
@@ -147,8 +149,8 @@ function getArticleDetails(host, fullpath, callback) {
         var fullTitle = "";
         var fullBlurb = "";
         var fullArticle = "";
-		var imageLink = "";
-		
+        var imageLink = "";
+
         switch (host) {
             case "foxnews":
                 fullTitle = elText(doc.querySelector(".headline"));
@@ -165,8 +167,8 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".c-entry-content p").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-				imageLink = highestQual(doc.querySelector("source").srcset);
-				console.log(imageLink);
+                if (doc.querySelector("source")) imageLink = highestQual(doc.querySelector("source").srcset);
+                console.log(imageLink);
                 break;
             case "nbcnews":
             case "msnbc": //TODO NO TITLES
@@ -223,8 +225,7 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".js_post-content p").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-				var imgs = doc.querySelectorAll("img");
-				imageLink = highestQual(imgs[imgs.length-1].data-srcset);
+                if (doc.querySelector(".image-hydration-wrapper img")) imageLink = highestQual(doc.querySelector(".image-hydration-wrapper img").srcset);
                 fullBlurb = blurbify(fullArticle);
                 break;
             case "bbc":
@@ -253,7 +254,7 @@ function getArticleDetails(host, fullpath, callback) {
         callback(fullTitle, fullBlurb, fullArticle, imageLink);
     };
     xhr.onerror = function () {
-        callback("", "", "");
+        callback("", "", "", "");
     };
     xhr.responseType = "document";
     xhr.open("GET", fullpath);
@@ -261,14 +262,14 @@ function getArticleDetails(host, fullpath, callback) {
 }
 
 function blurbify(article) {
-	var blurb = article.substring(0, 100).replace(/<br>/g, " ");
-	for (var i = 100; article.charAt(i) !== ' ' && i < 150; i++) blurb += article.charAt(i);
-	return blurb.replace(/<br>/g, " ") + "...";
+    var blurb = article.substring(0, 100).replace(/<br>/g, " ");
+    for (var i = 100; article.charAt(i) !== ' ' && i < 150; i++) blurb += article.charAt(i);
+    return blurb.replace(/<br>/g, " ") + "...";
 }
 
 function highestQual(fullthingo) {
-	var thingo = fullthingo.split(", ");
-	return thingo[thingo.length - 1];
+    var thingo = fullthingo.split(", ");
+    return thingo[thingo.length - 1];
 }
 
 function elText(el) {

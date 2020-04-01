@@ -365,7 +365,7 @@ function switchArticlePage() {
                 const nextArticle = breit[bbc.indexOf(PAGEURL) % breit.length];
                 getArticleDetails(nextArticle, (title, blurb, article) => {
                     elSet(document.querySelector(".story-body__h1"), title);
-                    document.querySelectorAll("p").forEach((e, i) => {
+                    document.querySelectorAll(".story-body__inner p").forEach((e, i) => {
                         if (i === 1) e.innerHTML = article; //Skip the intro that is bolded
                         else elSet(e, "");
                     });
