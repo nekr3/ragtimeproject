@@ -1,6 +1,6 @@
 console.log("Hi there!");
 
-const ALL_SITES = ["https://www.foxnews.com/", "https://www.vox.com/", "https://www.msnbc.com/", "https://www.breitbart.com/", "https://www.cnn.com/", "https://www.wsj.com/", "https://www.nytimes.com/", "https://www.infowars.com/", "https://www.theatlantic.com/", "https://www.theonion.com/"];
+const ALL_SITES = ["https://www.foxnews.com/", "https://www.vox.com/", "https://www.msnbc.com/", "https://www.breitbart.com/", "https://www.cnn.com/", "https://www.wsj.com/", "https://www.nytimes.com/", "https://www.infowars.com/", "https://www.theatlantic.com/", "https://www.theonion.com/", "https://www.bbc.com/"];
 
 chrome.storage.local.clear();
 
@@ -88,8 +88,13 @@ ALL_SITES.forEach((val) => {
                     articleLinks.push(e.parentElement.href);
                 });
                 break;
+			case "bbc":
+				doc.querySelectorAll(".media .media__content .media__link").forEach((e) => {
+					articleLinks.push(e.href);
+				});
+				break;
         }
-
+		console.log("hewwo");
         var worthyArticles = [];
         articleLinks.forEach((fullpath, i) => {
             getArticleDetails(url, fullpath, (title, blurb, article) => {
@@ -135,16 +140,16 @@ function getArticleDetails(host, fullpath, callback) {
                 fullTitle = elText(doc.querySelector(".headline"));
                 doc.querySelectorAll(".article-body > p").forEach((e) => {
                     if (!e.textContent.startsWith("Get all the latest news on coronavirus")) {
-                        fullArticle += e.textContent + "<br>";
+                        fullArticle += e.textContent + "<br><br>";
                     }
                 });
-                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ");
+                fullBlurb = fullArticle.substring(0, 201).replace(/<br>/g, " ") + "...";
                 break;
             case "vox":
                 fullTitle = elText(doc.querySelector(".c-page-title"));
                 fullBlurb = elText(doc.querySelector(".c-entry-summary"));
                 doc.querySelectorAll(".c-entry-content p").forEach((e) => {
-                    fullArticle += e.textContent + "<br>";
+                    fullArticle += e.textContent + "<br><br>";
                 });
                 break;
             case "nbcnews":
@@ -152,58 +157,79 @@ function getArticleDetails(host, fullpath, callback) {
                 fullTitle = elText(doc.querySelector(".headline___CuovH"));
                 fullBlurb = elText(doc.querySelector(".articleDek"));
                 doc.querySelectorAll(".article-body p").forEach((e) => {
-                    fullArticle += e.textContent + "<br>";
+                    fullArticle += e.textContent + "<br><br>";
                 });
                 break;
             case "breitbart":
                 fullTitle = elText(doc.querySelector(".the-article header h1"));
                 fullBlurb = elText(doc.querySelector(".subheading"));
                 doc.querySelectorAll(".entry-content p").forEach((e) => {
-                    fullArticle += e.textContent + "<br>";
+                    fullArticle += e.textContent + "<br><br>";
                 });
                 break;
             case "cnn":
                 fullTitle = elText(doc.querySelector(".pg-headline"));
                 doc.querySelectorAll(".zn-body__paragraph").forEach((e) => {
-                    fullArticle += e.textContent + "<br>";
+                    fullArticle += e.textContent + "<br><br>";
                 });
-                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ");
+                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ") + "...";
                 break;
             case "wsj": //TODO CAN'T DO
                 fullTitle = elText(doc.querySelector(".wsj-article-headline"));
                 doc.querySelectorAll(".zn-body__paragraph").forEach((e) => {
-                    fullArticle += e.textContent + "<br>";
+                    fullArticle += e.textContent + "<br><br>";
                 });
-                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ");
+                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ") + "...";
                 break;
             case "nytimes": //TODO CAN'T DO
                 fullTitle = elText(doc.querySelector(".pg-headline"));
                 doc.querySelectorAll(".zn-body__paragraph").forEach((e) => {
-                    fullArticle += e.textContent + "<br>";
+                    fullArticle += e.textContent + "<br><br>";
                 });
-                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ");
+                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ") + "...";
                 break;
             case "infowars":
                 fullTitle = elText(doc.querySelector(".entry-title"));
                 fullBlurb = elText(doc.querySelector(".entry-subtitle"));
                 doc.querySelectorAll("article p").forEach((e) => {
-                    fullArticle += e.textContent + "<br>";
+                    fullArticle += e.textContent + "<br><br>";
                 });
                 break;
             case "theatlantic":
                 fullTitle = elText(doc.querySelector(".c-article-header__hed"));
                 fullBlurb = elText(doc.querySelector(".c-dek"));
                 doc.querySelectorAll(".l-article__section p").forEach((e) => {
-                    fullArticle += e.textContent + "<br>";
+                    fullArticle += e.textContent + "<br><br>";
                 });
                 break;
             case "theonion":
                 fullTitle = elText(doc.querySelector("header a"));
                 doc.querySelectorAll(".js_post-content p").forEach((e) => {
-                    fullArticle += e.textContent + "<br>";
+                    fullArticle += e.textContent + "<br><br>";
                 });
-                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ");
+                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ") + "...";
                 break;
+			case "bbc":
+				fullTitle = elText(doc.querySelector(".story-body__h1"));
+				fullBlurb = doc.getElementsByTagName("META")[3].content;
+				doc.querySelectorAll("p").forEach((e) => {
+					fullArticle += e.textContent + "<br><br>";
+				});
+				break;
+			case "economist":
+				fullTitle = elText(doc.querySelector(".article__headline"));
+				fullBlurb = elText(doc.querySelector(".article__description"));
+				doc.querySelectorAll(".article__body-text").forEach((e) => {
+					fullArticle += e.textContent + "<br><br>";
+				});
+				break;
+			case "cbs":
+				fullTitle = elText(doc.querySelector(".story-body__h1"));
+				fullBlurb = doc.getElementsByTagName("META")[3].content;
+				doc.querySelectorAll("p").forEach((e) => {
+					fullArticle += e.textContent + "<br><br>";
+				});
+				break;
         }
 
         callback(fullTitle, fullBlurb, fullArticle);

@@ -221,9 +221,17 @@ function switchHomePage() {
 			});
 			break;
 		case "economist":
-			//alert("hello?");
-			document.querySelectorAll(".teaser__headline").forEach((e) => {
-				elSet(e, "haha");
+			alert("hello?");
+			chrome.storage.local.get("bbc", (data) => {
+				const articles = data["bbc"][0];
+				var i = 0;
+				document.querySelectorAll(".teaser__headline").forEach((e) => {
+					getArticleDetails(articles[i], (title, blurb, __) => {
+						elSet(e, "CHANGED: " + title);
+						
+						i = (i + 1) % articles.length;
+					});
+				});
 			});
 			break;
 		case "cbsnews":
