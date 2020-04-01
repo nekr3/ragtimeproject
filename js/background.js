@@ -98,7 +98,7 @@ ALL_SITES.forEach((val) => {
 					articleLinks.push(e.href);
 				});
 				break;
-			case "cbs":
+			case "cbsnews":
 				doc.querySelectorAll("ul .site-nav__item--type-article a").forEach((e) => {
 					articleLinks.push(e.href);
 				});
@@ -233,7 +233,7 @@ function getArticleDetails(host, fullpath, callback) {
 					fullArticle += e.textContent + "<br><br>";
 				});
 				break;
-			case "cbs":
+			case "cbsnews":
 				fullTitle = elText(doc.querySelector(".content__title"));
 				doc.querySelectorAll(".content__body p").forEach((e) => {
 					fullArticle += e.textContent + "<br><br>";
