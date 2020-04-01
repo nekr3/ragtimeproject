@@ -1,7 +1,10 @@
 {
-  "name": "Ragtime Project",
+  "name": "News Swapper",
   "version": "1.0",
-  "description": "idk write some cool things",
+  "description": "Swaps news articles for those from other sites.",
+  "icons": {
+	"512": "icon512.png"
+  },
   "background": {
     "scripts": [
       "js/background.js"
@@ -23,7 +26,8 @@
     "https://www.nytimes.com/*",
     "https://www.infowars.com/*",
     "https://www.theatlantic.com/*",
-    "https://www.theonion.com/*"
+    "https://www.theonion.com/*",
+	"https://www.bbc.com/*"
   ],
   "content_scripts": [
     {
@@ -37,7 +41,8 @@
         "https://www.nytimes.com/*",
         "https://www.infowars.com/*",
         "https://www.theatlantic.com/*",
-        "https://www.theonion.com/*"
+        "https://www.theonion.com/*",
+		"https://www.bbc.com/*"
       ],
       "js": [
         "js/content.js"
