@@ -1,17 +1,17 @@
-const HOSTURL = document.location.host.split(".")[1];
-const PAGEURL = document.location.protocol + "//" + document.location.host + document.location.pathname;
+const HOSTURL = document.location.host;
+const PAGEURL = document.location.host + document.location.pathname;
 
-if (confirm(`I AM HEREEEEE at ${HOSTURL}, ${PAGEURL}`)) {
+if (confirm(`I AM HEREEEEE at ${HOSTURL} + ${PAGEURL}`)) {
     if (document.location.pathname === "/") switchHomePage();
     else switchArticlePage();
 }
 
 function switchHomePage() {
     switch (HOSTURL) {
-        case "foxnews":
+        case "www.foxnews.com":
             alert("hello?");
-            chrome.storage.local.get("vox", (data) => {
-                const articles = data["vox"][0];
+            chrome.storage.local.get("www.vox.com", (data) => {
+                const articles = data["www.vox.com"];
 
                 var i = 0;
                 document.querySelectorAll(".content a").forEach((e) => {
@@ -27,10 +27,10 @@ function switchHomePage() {
                 });
             });
             break;
-        case "vox":
+        case "www.vox.com":
             alert("hello?");
-            chrome.storage.local.get("foxnews", (data) => {
-                const articles = data["foxnews"][0];
+            chrome.storage.local.get("www.foxnews.com", (data) => {
+                const articles = data["www.foxnews.com"];
 
                 var i = 0;
                 document.querySelectorAll(".c-entry-box--compact__body").forEach((e) => {
@@ -45,13 +45,27 @@ function switchHomePage() {
                 });
             });
             break;
-        case "msnbc":
+        case "www.msnbc.com":
             alert("hello?");
-            chrome.storage.local.get("breitbart", (data) => {
-                const articles = data["breitbart"][0];
+            chrome.storage.local.get("www.breitbart.com", (data) => {
+                const articles = data["www.breitbart.com"];
 
                 var i = 0;
-                document.querySelectorAll(".showDot___34ZrJ a").forEach((e) => {
+                document.querySelectorAll(".cover-spread-tease__headline span:not(.icon)").forEach((e) => {
+                    getArticleDetails(articles[i], (title, _, __) => {
+                        e.textContent = "CHANGED: " + title;
+                    });
+                    i = (i + 1) % articles.length;
+                });
+
+                document.querySelectorAll(".twoByOne h3 a").forEach((e) => {
+                    getArticleDetails(articles[i], (title, _, __) => {
+                        e.textContent = "CHANGED: " + title;
+                    });
+                    i = (i + 1) % articles.length;
+                });
+
+                document.querySelectorAll(".cover-spread__headline").forEach((e) => {
                     getArticleDetails(articles[i], (title, _, __) => {
                         e.textContent = "CHANGED: " + title;
                     });
@@ -59,10 +73,10 @@ function switchHomePage() {
                 });
             });
             break;
-        case "breitbart":
+        case "www.breitbart.com":
             alert("hello?");
-            chrome.storage.local.get("msnbc", (data) => {
-                const articles = data["msnbc"][0];
+            chrome.storage.local.get("www.msnbc.com", (data) => {
+                const articles = data["www.msnbc.com"];
 
                 var i = 0;
                 document.querySelectorAll("article").forEach((e) => {
@@ -86,10 +100,10 @@ function switchHomePage() {
                 });
             });
             break;
-        case "cnn":
+        case "www.cnn.com":
             alert("hello?");
-            chrome.storage.local.get("wsj", (data) => {
-                const articles = data["wsj"][0];
+            chrome.storage.local.get("www.wsj.com", (data) => {
+                const articles = data["www.wsj.com"];
 
                 var i = 0;
                 document.querySelectorAll(".cd__headline-text").forEach((e) => {
@@ -100,10 +114,10 @@ function switchHomePage() {
                 });
             });
             break;
-        case "wsj": //TODO DOESNT WORK
+        case "www.wsj.com": //TODO DOESNT WORK
             alert("hello?");
-            chrome.storage.local.get("cnn", (data) => {
-                const articles = data["cnn"][0];
+            chrome.storage.local.get("www.cnn.com", (data) => {
+                const articles = data["www.cnn.com"];
 
                 var i = 0;
                 document.querySelectorAll("article").forEach((e) => {
@@ -124,17 +138,17 @@ function switchHomePage() {
                 });
             });
             break;
-        case "nytimes":
+        case "www.nytimes.com":
             alert("hello?");
-            chrome.storage.local.get("infowars", (data) => {
+            chrome.storage.local.get("www.infowars.com", (data) => {
 
             });
             //TODO idk how 2 do plz help
             break;
-        case "infowars":
+        case "www.infowars.com":
             alert("hello?");
-            chrome.storage.local.get("nytimes", (data) => {
-                const articles = data["nytimes"][0];
+            chrome.storage.local.get("www.nytimes.com", (data) => {
+                const articles = data["www.nytimes.com"];
 
                 var i = 0;
                 document.querySelectorAll(".title a").forEach((e) => {
@@ -164,10 +178,10 @@ function switchHomePage() {
                 });
             });
             break;
-        case "theatlantic":
+        case "www.theatlantic.com":
             alert("hello?");
-            chrome.storage.local.get("theonion", (data) => {
-                const articles = data["theonion"][0];
+            chrome.storage.local.get("www.theonion.com", (data) => {
+                const articles = data["www.theonion.com"];
 
                 var i = 0;
                 document.querySelectorAll("article").forEach((e) => {
@@ -199,10 +213,10 @@ function switchHomePage() {
                 });
             });
             break;
-        case "theonion":
+        case "www.theonion.com":
             alert("hello?");
-            chrome.storage.local.get("theatlantic", (data) => {
-                const articles = data["theatlantic"][0];
+            chrome.storage.local.get("www.theatlantic.com", (data) => {
+                const articles = data["www.theatlantic.com"];
 
                 var i = 0;
                 document.querySelectorAll("article").forEach((e) => {
@@ -219,156 +233,113 @@ function switchHomePage() {
 
 function switchArticlePage() {
     switch (HOSTURL) {
-        case "foxnews":
-            chrome.storage.local.get(["foxnews", "vox"], (data) => {
-                const vox = data["vox"][0];
-                const fox = data["foxnews"][1];
+        case "www.foxnews.com":
+            chrome.storage.local.get(["www.fox.com", "www.vox.com"], (data) => {
+                const vox = data["www.vox.com"];
+                const fox = data["www.fox.com"];
 
-                const nextArticle = vox[fox.indexOf(PAGEURL) % vox.length];
-                console.log(`REPLACING ${PAGEURL} WITH ${nextArticle}`);
-                getArticleDetails(nextArticle, (title, blurb, article) => {
-                    elSet(document.querySelector(".headline"), title);
-                    document.querySelectorAll(".article-body > p").forEach((e, i) => {
-                        if (i === 0) e.innerHTML = article;
-                        else elSet(e, "");
-                    });
-                });
-            });
-            break;
-        case "vox":
-            chrome.storage.local.get(["foxnews", "vox"], (data) => {
-                const fox = data["foxnews"][0];
-                const vox = data["vox"][1];
-
-                const nextArticle = fox[vox.indexOf(PAGEURL) % fox.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
-                    elSet(document.querySelector(".c-page-title"), title);
-                    elSet(document.querySelector(".c-entry-summary"), blurb);
-                    document.querySelectorAll(".c-entry-content p").forEach((e, i) => {
-                        if (i === 0) e.innerHTML = article;
-                        else elSet(e, "");
-                    });
-                });
-            });
-            break;
-        case "nbcnews":
-        case "msnbc":
-            chrome.storage.local.get(["msnbc", "breitbart"], (data) => {
-                const breitbart = data["breitbart"][0];
-                const msnbc = data["msnbc"][1];
-
-                const nextArticle = breitbart[msnbc.indexOf(PAGEURL) % breitbart.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
-                    elSet(document.querySelector(".headline___CuovH"), title);
-                    elSet(document.querySelector(".articleDek"), blurb);
-                    document.querySelectorAll(".article-body p").forEach((e, i) => {
-                        if (i === 0) e.innerHTML = article;
-                        else elSet(e, "");
-                    });
-                });
-            });
-            break;
-        case "breitbart":
-            chrome.storage.local.get(["msnbc", "breitbart"], (data) => {
-                const msnbc = data["msnbc"][0];
-                const breitbart = data["breitbart"][1];
-
-                const nextArticle = msnbc[breitbart.indexOf(PAGEURL) % msnbc.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
-                    elSet(document.querySelector(".the-article header h1"), title);
-                    elSet(document.querySelector(".subheading"), blurb);
-                    document.querySelectorAll(".entry-content p").forEach((e, i) => {
-                        if (i === 0) e.innerHTML = article;
-                        else elSet(e, "");
-                    });
-                });
-            });
-            break;
-        case "cnn":
-            chrome.storage.local.get(["cnn", "wsj"], (data) => {
-                const wsj = data["wsj"][0];
-                const cnn = data["cnn"][1];
-
-                const nextArticle = wsj[cnn.indexOf(PAGEURL) % wsj.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
-                    elSet(document.querySelector(".pg-headline"), title);
-                    document.querySelectorAll(".zn-body__paragraph").forEach((e, i) => {
-                        if (i === 0) e.innerHTML = article;
-                        else elSet(e, "");
-                    });
-                });
-            });
-            break;
-        case "wsj":
-            chrome.storage.local.get(["cnn", "wsj"], (data) => {
-                const cnn = data["cnn"][0];
-                const wsj = data["wsj"][1];
-
-                const nextArticle = cnn[wsj.indexOf(PAGEURL) % cnn.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
-                    elSet(document.querySelector(".wsj-article-headline"), title);
-                    document.querySelectorAll(".zn-body__paragraph").forEach((e, i) => {
-                        if (i === 0) e.innerHTML = article;
-                        else elSet(e, "");
-                    });
-                });
-            });
-            break;
-        case "nytimes":
-            chrome.storage.local.get(["nytimes", "infowars"], (data) => {
-                const info = data["infowars"][0];
-                const nyt = data["nytimes"][1];
-
-                const nextArticle = info[nyt.indexOf(PAGEURL) % info.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
+                const nextArticle = vox[fox.indexOf(fullpath) % vox.length];
+                getArticleDetails("www.vox.com", nextArticle, (title, article) => {
 
                 });
             });
             break;
-        case "infowars":
-            chrome.storage.local.get(["nytimes", "infowars"], (data) => {
-                const nyt = data["nytimes"][0];
-                const info = data["infowars"][1];
+        case "www.vox.com":
+            chrome.storage.local.get(["www.fox.com", "www.vox.com"], (data) => {
+                const vox = data["www.vox.com"];
+                const fox = data["www.fox.com"];
 
-                const nextArticle = nyt[info.indexOf(PAGEURL) % nyt.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
-                    elSet(document.querySelector(".entry-title"), title);
-                    elSet(document.querySelector(".entry-subtitle"), blurb);
-                    document.querySelectorAll("article p").forEach((e, i) => {
-                        if (i === 0) e.innerHTML = article;
-                        else elSet(e, "");
-                    });
+                const nextArticle = fox[vox.indexOf(fullpath) % fox.length];
+                getArticleDetails("www.vox.com", nextArticle, (title, article) => {
+
                 });
             });
             break;
-        case "theatlantic":
-            chrome.storage.local.get(["theatlantic", "theonion"], (data) => {
-                const onion = data["theonion"][0];
-                const atl = data["theatlantic"][1];
+        case "www.msnbc.com":
+            chrome.storage.local.get(["www.msnbc.com", "www.breitbart.com"], (data) => {
+                const msnbc = data["www.msnbc.com"];
+                const breitbart = data["www.breitbart.com"];
 
-                const nextArticle = onion[atl.indexOf(PAGEURL) % onion.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
-                    elSet(document.querySelector(".c-article-header__hed"), title);
-                    elSet(document.querySelector(".c-dek"), blurb);
-                    document.querySelectorAll(".l-article__section p").forEach((e, i) => {
-                        if (i === 0) e.innerHTML = article;
-                        else elSet(e, "");
-                    });
+                const nextArticle = breitbart[msnbc.indexOf(fullpath) % breitbart.length];
+                getArticleDetails("www.breitbart.com", nextArticle, (title, article) => {
+
                 });
             });
             break;
-        case "theonion":
-            chrome.storage.local.get(["theatlantic", "theonion"], (data) => {
-                const atl = data["theatlantic"][0];
-                const onion = data["theonion"][1];
+        case "www.breitbart.com":
+            chrome.storage.local.get(["www.msnbc.com", "www.breitbart.com"], (data) => {
+                const msnbc = data["www.msnbc.com"];
+                const breitbart = data["www.breitbart.com"];
 
-                const nextArticle = atl[onion.indexOf(PAGEURL) % atl.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
-                    elSet(document.querySelector("header a"), title);
-                    document.querySelectorAll(".js_post-content p").forEach((e, i) => {
-                        if (i === 0) e.innerHTML = article;
-                        else elSet(e, "");
-                    });
+                const nextArticle = msnbc[breitbart.indexOf(fullpath) % msnbc.length];
+                getArticleDetails("www.msnbc.com", nextArticle, (title, article) => {
+
+                });
+            });
+            break;
+        case "www.cnn.com":
+            chrome.storage.local.get(["www.cnn.com", "www.wsj.com"], (data) => {
+                const cnn = data["www.cnn.com"];
+                const wsj = data["www.wsj.com"];
+
+                const nextArticle = wsj[cnn.indexOf(fullpath) % wsj.length];
+                getArticleDetails("www.wsj.com", nextArticle, (title, article) => {
+
+                });
+            });
+            break;
+        case "www.wsj.com":
+            chrome.storage.local.get(["www.cnn.com", "www.wsj.com"], (data) => {
+                const cnn = data["www.cnn.com"];
+                const wsj = data["www.wsj.com"];
+
+                const nextArticle = cnn[wsj.indexOf(fullpath) % cnn.length];
+                getArticleDetails("www.cnn.com", nextArticle, (title, article) => {
+
+                });
+            });
+            break;
+        case "www.nytimes.com":
+            chrome.storage.local.get(["www.nytimes.com", "www.infowars.com"], (data) => {
+                const nyt = data["www.nytimes.com"];
+                const info = data["www.infowars.com"];
+
+                const nextArticle = info[nyt.indexOf(fullpath) % info.length];
+                getArticleDetails("www.infowars.com", nextArticle, (title, article) => {
+
+                });
+            });
+            break;
+        case "www.infowars.com":
+            chrome.storage.local.get(["www.nytimes.com", "www.infowars.com"], (data) => {
+                const nyt = data["www.nytimes.com"];
+                const info = data["www.infowars.com"];
+
+                const nextArticle = nyt[info.indexOf(fullpath) % nyt.length];
+                getArticleDetails("www.nytimes.com", nextArticle, (title, article) => {
+
+                });
+            });
+            break;
+        case "www.theatlantic.com":
+            chrome.storage.local.get(["www.theatlantic.com", "www.theonion.com"], (data) => {
+                const atl = data["www.theatlantic.com"];
+                const onion = data["www.theonion.com"];
+
+                const nextArticle = onion[atl.indexOf(fullpath) % onion.length];
+                getArticleDetails("www.theonion.com", nextArticle, (title, article) => {
+
+                });
+            });
+            break;
+        case "www.theonion.com":
+            chrome.storage.local.get(["www.theatlantic.com", "www.theonion.com"], (data) => {
+                const atl = data["www.theatlantic.com"];
+                const onion = data["www.theonion.com"];
+
+                const nextArticle = atl[onion.indexOf(fullpath) % atl.length];
+                getArticleDetails("www.theatlantic.com", nextArticle, (title, article) => {
+
                 });
             });
             break;
