@@ -1,6 +1,7 @@
 console.log("Hi there!");
 
-const ALL_SITES = ["https://www.foxnews.com/", "https://www.vox.com/", "https://www.msnbc.com/", "https://www.breitbart.com/", "https://www.cnn.com/", "https://www.wsj.com/", "https://www.nytimes.com/", "https://www.infowars.com/", "https://www.theatlantic.com/", "https://www.theonion.com/", "https://www.bbc.com/", "https://www.economist.com/", "https://www.cbsnews.com/"];
+const ALL_SITES = ["https://www.foxnews.com/", "https://www.vox.com/", "https://www.msnbc.com/", "https://www.breitbart.com/", "https://www.cnn.com/", "https://www.wsj.com/", "https://www.nytimes.com/", "https://www.infowars.com/", "https://www.theatlantic.com/", "https://www.theonion.com/", "https://www.bbc.com/news", "https://www.economist.com/", "https://www.cbsnews.com/"];
+//const ALL_SITES = ["https://www.bbc.com/news"];
 
 chrome.storage.local.clear();
 
@@ -8,7 +9,7 @@ ALL_SITES.forEach((val) => {
     const xhr = new XMLHttpRequest();
     xhr.onload = function () {
         const doc = this.responseXML;
-        const url = val.substring(12, val.length - 5);
+        const url = val.split(".")[1];
         const articleLinks = [];
         switch (url) {
             case "foxnews":
@@ -88,49 +89,80 @@ ALL_SITES.forEach((val) => {
                     articleLinks.push(e.parentElement.href);
                 });
                 break;
-			case "bbc":
-				doc.querySelectorAll(".media .media__content .media__link").forEach((e) => {
-					articleLinks.push(e.href);
-				});
-				break;
-			case "economist":
-				doc.querySelectorAll(".headline-link").forEach((e) => {
-					articleLinks.push(e.href);
-				});
-				console.log("aaaaaaaaaaaaaaaaa");
-				break;
-			case "cbsnews":
-				doc.querySelectorAll("ul .site-nav__item--type-article a").forEach((e) => {
-					articleLinks.push(e.href);
-				});
-				break;
+            case "bbc":
+                doc.querySelectorAll(".gs-c-promo-heading").forEach((e) => {
+                    articleLinks.push(e.href);
+                });
+                break;
+            case "economist":
+                doc.querySelectorAll(".headline-link").forEach((e) => {
+                    articleLinks.push(e.href);
+                });
+                break;
+            case "cbsnews":
+                doc.querySelectorAll("article a").forEach((e) => {
+                    articleLinks.push(e.href);
+                });
+                break;
         }
-		console.log("hewwo");
-        var worthyArticles = [];
+
+        loopArticles(url, articleLinks, [], 0);
+        /*let worthyArticles = [];
         articleLinks.forEach((fullpath, i) => {
             getArticleDetails(url, fullpath, (title, blurb, article) => {
                 if (title !== "" && article !== "") {
-                    //console.log("===========================================");
-                    //console.log(`${fullpath}\n${title}\n${blurb}\n${article}`);
-                    //console.log("===========================================");
-
                     chrome.storage.local.set({[fullpath]: [title, blurb, article]});
+
                     worthyArticles.push(fullpath);
+                    /!*if(url === "bbc"){
+                        console.log("===========================================");
+                        console.log(`${fullpath}\n${title}\n${blurb}\n${article}`);
+                        console.log(i + ", " + worthyArticles.length);
+                        console.log("===========================================");
+                    }*!/
                 }
 
+                console.log("ON LOOP " + i + " " + worthyArticles.length);
                 if (i === articleLinks.length - 1) {
-                    chrome.storage.local.set({[url]: [worthyArticles, articleLinks]}, () => {
+                    console.log("SETTING " + worthyArticles.length + " ARTICLES FOR " + url);
+                    console.log(i);
+                    chrome.storage.local.set({[val]: [worthyArticles, articleLinks]}, () => {
                         //console.log(`Read in articles for ${url}`);
                         //console.log(articleLinks);
                     });
                 }
             });
-        });
+        });*/
     };
     xhr.responseType = "document";
     xhr.open("GET", val);
     xhr.send();
 });
+
+function loopArticles(url, all, worth, i) {
+    if (i === all.length) {
+        chrome.storage.local.set({[url]: [worth, all]}, () => {
+            console.log("Loaded " + url);
+        });
+        return;
+    }
+
+    const fullpath = all[i];
+    getArticleDetails(url, fullpath, (title, blurb, article) => {
+        if (title !== "" && article !== "") {
+            chrome.storage.local.set({[fullpath]: [title, blurb, article]});
+
+            worth.push(fullpath);
+            /*console.log("===========================================");
+              console.log(`${fullpath}\n${title}\n${blurb}\n${article}`);
+              console.log(i + ", " + worthyArticles.length);
+              console.log("===========================================");
+            */
+        }
+
+        loopArticles(url, all, worth, i + 1);
+    });
+}
 
 
 function getArticleDetails(host, fullpath, callback) {
@@ -218,32 +250,35 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".js_post-content p").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-				fullBlurb = blurbify(fullArticle);
+                fullBlurb = blurbify(fullArticle);
                 break;
-			case "bbc":
-				fullTitle = elText(doc.querySelector(".story-body__h1"));
-				fullBlurb = doc.getElementsByTagName("META")[3].content;
-				doc.querySelectorAll("p").forEach((e) => {
-					fullArticle += e.textContent + "<br><br>";
-				});
-				break;
-			case "economist":
-				fullTitle = elText(doc.querySelector(".article__headline"));
-				fullBlurb = elText(doc.querySelector(".article__description"));
-				doc.querySelectorAll(".article__body-text").forEach((e) => {
-					fullArticle += e.textContent + "<br><br>";
-				});
-				break;
+            case "bbc":
+                fullTitle = elText(doc.querySelector(".story-body__h1"));
+                fullBlurb = doc.getElementsByTagName("META")[3].content;
+                doc.querySelectorAll(".story-body__inner p").forEach((e) => {
+                    fullArticle += e.textContent + "<br><br>";
+                });
+                break;
+            case "economist":
+                fullTitle = elText(doc.querySelector(".article__headline"));
+                fullBlurb = elText(doc.querySelector(".article__description"));
+                doc.querySelectorAll(".article__body-text").forEach((e) => {
+                    if (!e.textContent.startsWith("Editor’s note:")) fullArticle += e.textContent + "<br><br>";
+                });
+                break;
 			case "cbsnews":
-				fullTitle = elText(doc.querySelector(".content__title"));
-				doc.querySelectorAll(".content__body p").forEach((e) => {
-					fullArticle += e.textContent + "<br><br>";
-				});
-				fullBlurb = blurbify(fullArticle);
-				break;
+                fullTitle = elText(doc.querySelector(".content__title"));
+                doc.querySelectorAll(".content__body p").forEach((e) => {
+                    fullArticle += e.textContent + "<br><br>";
+                });
+                fullBlurb = blurbify(fullArticle);
+                break;
         }
 
         callback(fullTitle, fullBlurb, fullArticle);
+    };
+    xhr.onerror = function () {
+        callback("", "", "");
     };
     xhr.responseType = "document";
     xhr.open("GET", fullpath);

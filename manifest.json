@@ -19,6 +19,7 @@
     "storage",
     "https://www.foxnews.com/*",
     "https://www.vox.com/*",
+    "https://www.nbcnews.com/*",
     "https://www.msnbc.com/*",
     "https://www.breitbart.com/*",
     "https://www.cnn.com/*",
@@ -26,16 +27,17 @@
     "https://www.nytimes.com/*",
     "https://www.infowars.com/*",
     "https://www.theatlantic.com/*",
-    "https://www.theonion.com/*",
-	"https://www.bbc.com/*",
-	 "https://www.cbsnews.com/*",
-	"https://www.economist.com/*"
+    "https://*.theonion.com/*",
+    "https://www.bbc.com/*",
+    "https://www.cbsnews.com/*",
+    "https://www.economist.com/*"
   ],
   "content_scripts": [
     {
       "matches": [
         "https://www.foxnews.com/*",
         "https://www.vox.com/*",
+        "https://www.nbcnews.com/*",
         "https://www.msnbc.com/*",
         "https://www.breitbart.com/*",
         "https://www.cnn.com/*",
@@ -43,10 +45,10 @@
         "https://www.nytimes.com/*",
         "https://www.infowars.com/*",
         "https://www.theatlantic.com/*",
-        "https://www.theonion.com/*",
-		"https://www.bbc.com/*",
-		"https://www.cbsnews.com/*",
-	    "https://www.economist.com/*"
+        "https://*.theonion.com/*",
+        "https://www.bbc.com/*",
+        "https://www.cbsnews.com/*",
+        "https://www.economist.com/*"
       ],
       "js": [
         "js/content.js"
