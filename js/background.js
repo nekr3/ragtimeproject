@@ -113,7 +113,7 @@ function bigload(val) {
 
         var worthyArticles = [];
         var totalLoaded = 0;
-        console.log(`Length: ${articleLinks.length}`);
+        //console.log(`Length: ${articleLinks.length}`);
         articleLinks.forEach((fullpath) => {
             getArticleDetails(url, fullpath, (title, blurb, article, imageLink) => {
                 totalLoaded++;
@@ -122,7 +122,7 @@ function bigload(val) {
                     worthyArticles.push(fullpath);
                 }
 
-                console.log(totalLoaded);
+                //console.log(totalLoaded);
                 if (totalLoaded === articleLinks.length) {
                     chrome.storage.local.set({[url]: [worthyArticles, articleLinks]}, () => {
                         //console.log(`Read in articles for ${url}`);
@@ -167,7 +167,7 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".c-entry-content p").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-                if (doc.querySelector("source")) imageLink = highestQual(doc.querySelector("source").srcset);
+                if (doc.querySelector("source")) imageLink = doc.querySelector("source").srcset;
                 console.log(imageLink);
                 break;
             case "nbcnews":
@@ -225,7 +225,8 @@ function getArticleDetails(host, fullpath, callback) {
                 doc.querySelectorAll(".js_post-content p").forEach((e) => {
                     fullArticle += e.textContent + "<br><br>";
                 });
-                if (doc.querySelector(".image-hydration-wrapper img")) imageLink = highestQual(doc.querySelector(".image-hydration-wrapper img").srcset);
+                if (doc.querySelector("img")) imageLink = doc.querySelector("img").srcset;
+				console.log(imageLink);
                 fullBlurb = blurbify(fullArticle);
                 break;
             case "bbc":

@@ -284,13 +284,15 @@ function switchArticlePage() {
                 const vox = data["vox"][1];
 
                 const nextArticle = onion[vox.indexOf(PAGEURL) % onion.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
+                getArticleDetails(nextArticle, (title, blurb, article, imageLink) => {
                     elSet(document.querySelector(".c-page-title"), title);
                     elSet(document.querySelector(".c-entry-summary"), blurb);
                     document.querySelectorAll(".c-entry-content p").forEach((e, i) => {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
+					alert(imageLink);
+					if (document.querySelector("source")) document.querySelector("source").setAttribute(srcset, imageLink);
                 });
             });
             break;
@@ -300,12 +302,14 @@ function switchArticlePage() {
                 const onion = data["theonion"][1];
 
                 const nextArticle = vox[onion.indexOf(PAGEURL) % vox.length];
-                getArticleDetails(nextArticle, (title, blurb, article) => {
+                getArticleDetails(nextArticle, (title, blurb, article, imageLink) => {
                     elSet(document.querySelector("header a"), title);
                     document.querySelectorAll(".js_post-content p").forEach((e, i) => {
                         if (i === 0) e.innerHTML = article;
                         else elSet(e, "");
                     });
+					alert(imageLink);
+					if (document.querySelector("img")) document.querySelector("img").setAttribute(srcset, imageLink);
                 });
             });
             break;
