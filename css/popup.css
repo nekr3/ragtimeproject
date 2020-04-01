@@ -1,0 +1,12 @@
+table tr td {
+  border-right: 1px solid blue;
+  color: black
+}
+
+table tr td:last-of-type {
+  border: none;
+}
+
+#bigbody {
+  width: 100px;
+}
