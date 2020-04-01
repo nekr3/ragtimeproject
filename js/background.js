@@ -234,11 +234,11 @@ function getArticleDetails(host, fullpath, callback) {
 				});
 				break;
 			case "cbs":
-				fullTitle = elText(doc.querySelector(".story-body__h1"));
-				fullBlurb = doc.getElementsByTagName("META")[3].content;
-				doc.querySelectorAll("p").forEach((e) => {
+				fullTitle = elText(doc.querySelector(".content__title"));
+				doc.querySelectorAll(".content__body p").forEach((e) => {
 					fullArticle += e.textContent + "<br><br>";
 				});
+                fullBlurb = fullArticle.substring(0, 200).replace(/<br>/g, " ") + "...";
 				break;
         }
 
