@@ -1,7 +1,7 @@
 {
   "name": "News Swapper",
   "version": "1.0",
-  "description": "Swaps news articles for those from other sites.",
+  "description": "Swaps news articles from one site to another.",
   "icons": {
 	"512": "icon512.png"
   },
